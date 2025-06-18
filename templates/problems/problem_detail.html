@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ problem.title }} | CodeVerse</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f8;
+    }
+    
+    .navbar {
+      background: white;
+      border-bottom: 1px solid #e9ecef;
+      padding: 1rem 0;
+    }
+    
+    .container {
+      max-width: 1200px;
+    }
+    
+    .problem-card, .code-card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      background: white;
+    }
+    
+    .problem-title {
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 1rem;
+    }
+    
+    .badge {
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .difficulty-easy { background: #d1fae5; color: #065f46; }
+    .difficulty-medium { background: #fef3c7; color: #92400e; }
+    .difficulty-hard { background: #fee2e2; color: #991b1b; }
+    .company-badge { background: #dbeafe; color: #1e40af; }
+    .tag-badge { background: #f3f4f6; color: #374151; }
+    
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #4a5568;
+      margin: 1.5rem 0 0.8rem 0;
+    }
+    
+    .code-block {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 1rem;
+      font-family: 'Monaco', 'Consolas', monospace;
+      font-size: 0.85rem;
+      margin: 0.5rem 0;
+      overflow-x: auto;
+      color: #2d3748;
+      white-space: pre-wrap;
+    }
+    
+    .form-select, .form-control {
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.9rem;
+    }
+    
+    .form-select:focus, .form-control:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .code-editor {
+      min-height: 300px;
+      font-family: 'Monaco', 'Consolas', monospace;
+      font-size: 0.85rem;
+    }
+    
+    .btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 500;
+      border: none;
+      font-size: 0.9rem;
+      transition: all 0.15s ease;
+    }
+    
+    .btn-success {
+      background-color: #10b981;
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background-color: #059669;
+      transform: translateY(-1px);
+    }
+    
+    .btn-primary {
+      background-color: #2563eb;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+      transform: translateY(-1px);
+    }
+    
+    .btn-outline-secondary {
+      border: 1px solid #d1d5db;
+      color: #6b7280;
+      background: white;
+    }
+    
+    .btn-outline-secondary:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+      color: #6b7280;
+    }
+    
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #6b7280;
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    
+    .back-btn:hover {
+      color: #4b5563;
+      text-decoration: none;
+    }
+    
+    .modal-content {
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .loading-spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid transparent;
+      border-top: 2px solid currentColor;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+      .row {
+        margin: 0;
+      }
+      .col-md-6 {
+        padding: 0 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Simple Header -->
+  <nav class="navbar">
+    <div class="container">
+      <h4 class="m-0 text-muted fw-semibold">CodeVerse</h4>
+    </div>
+  </nav>
+
+  <div class="container my-4">
+    <!-- Back Button -->
+    <a href="{% url 'problem_list' %}" class="back-btn">
+      <i class="fas fa-arrow-left"></i> Back to Problems
+    </a>
+
+    <div class="row">
+      <!-- Problem Description Column -->
+      <div class="col-md-6 mb-4">
+        <div class="problem-card p-4">
+          <!-- Problem Title and Badges -->
+          <h2 class="problem-title">{{ problem.title }}</h2>
+          <div class="mb-3">
+            <span class="badge difficulty-{{ problem.difficulty|lower }}">
+              {{ problem.difficulty }}
+            </span>
+            <span class="badge company-badge">
+              <i class="fas fa-building me-1"></i>{{ problem.company }}
+            </span>
+            {% if problem.tags %}
+              {% for tag in problem.get_tags_list %}
+                <span class="badge tag-badge">{{ tag }}</span>
+              {% endfor %}
+            {% endif %}
+          </div>
+
+          <!-- Problem Statement -->
+          <h5 class="section-title">Problem Statement</h5>
+          <p style="line-height: 1.6;">{{ problem.statement }}</p>
+
+          <!-- Input Format -->
+          <h6 class="section-title">Input Format</h6>
+          <div class="code-block">{{ problem.input_format }}</div>
+
+          <!-- Output Format -->
+          <h6 class="section-title">Output Format</h6>
+          <div class="code-block">{{ problem.output_format }}</div>
+
+          <!-- Sample Input/Output -->
+          <div class="row">
+            <div class="col-6">
+              <h6 class="section-title">Sample Input</h6>
+              <div class="code-block">{{ problem.sample_input }}</div>
+            </div>
+            <div class="col-6">
+              <h6 class="section-title">Sample Output</h6>
+              <div class="code-block">{{ problem.sample_output }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Editor Column -->
+      <div class="col-md-6">
+        <div class="code-card p-4">
+          <h5 class="mb-3">Solution</h5>
+          
+          <!-- Language Selector -->
+          <div class="mb-3">
+            <label for="language" class="form-label">Language</label>
+            <select name="language" id="language" class="form-select">
+              <option value="python">Python</option>
+              <option value="java">Java</option>
+              <option value="cpp">C++</option>
+              <option value="javascript">JavaScript</option>
+              <option value="go">Go</option>
+              <option value="rust">Rust</option>
+            </select>
+          </div>
+
+          <!-- Code Editor -->
+          <div class="mb-3">
+            <label for="code" class="form-label">Your Code</label>
+            <textarea name="code" class="form-control code-editor" id="code" rows="15" 
+                      placeholder="# Write your Python code here..."></textarea>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-flex gap-2 flex-wrap">
+            <button type="button" class="btn btn-success" onclick="runCode()">
+              <div class="loading-spinner me-1" id="runSpinner"></div>
+              <i class="fas fa-play me-1" id="runIcon"></i>
+              Run Code
+            </button>
+            <button type="button" class="btn btn-primary" onclick="submitCode()">
+              <div class="loading-spinner me-1" id="submitSpinner"></div>
+              <i class="fas fa-paper-plane me-1" id="submitIcon"></i>
+              Submit Solution
+            </button>
+            <button type="button" class="btn btn-warning" onclick="getAIHint()">
+              <div class="loading-spinner me-1" id="hintSpinner"></div>
+              <i class="fas fa-lightbulb me-1" id="hintIcon"></i>
+              🤖 AI Hint
+            </button>
+            <a href="/problems/ai/dashboard/" class="btn btn-outline-info">
+              <i class="fas fa-robot me-1"></i>
+              AI Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Modal -->
+  <div class="modal fade" id="resultsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">
+            <i class="fas fa-chart-line me-2"></i>Results
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          <!-- Results will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Hint Modal -->
+  <div class="modal fade" id="hintModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" style="border: none; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15);">
+        <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 20px 20px 0 0; padding: 25px; border: none;">
+          <h5 class="modal-title" style="font-weight: 700; font-size: 1.3rem;">
+            <i class="fas fa-lightbulb me-2 text-warning"></i>🤖 AI Coding Mentor
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="hintModalBody" style="padding: 0;">
+          <!-- AI hint will be loaded here -->
+        </div>
+        <div class="modal-footer" style="border: none; padding: 25px; background: #f8fafc; border-radius: 0 0 20px 20px;">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 10px; padding: 10px 20px; font-weight: 600;">Close</button>
+          <button type="button" class="btn btn-primary" onclick="getAIHint()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 10px; padding: 10px 25px; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
+            <i class="fas fa-refresh me-2"></i>Get Another Hint
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Language templates
+    const languageTemplates = {
+      python: '# Write your Python code here...\ndef solution():\n    pass\n\nsolution()',
+      java: '// Write your Java code here...\n// Note: Your main logic should be in the main method\nSystem.out.println("Hello World");',
+      cpp: '// Write your C++ code here...\n// Common includes are already available\ncout << "Hello World" << endl;',
+      javascript: '// Write your JavaScript code here...\n// Use readline() to read input\nconsole.log("Hello World");',
+      go: '// Write your Go code here...\n// Scanner is available for input\nfmt.Println("Hello World")',
+      rust: '// Write your Rust code here...\n// Lines iterator is available for input\nprintln!("Hello World");'
+    };
+
+    // Handle language change
+    document.getElementById('language').addEventListener('change', function() {
+      const language = this.value;
+      document.getElementById('code').value = languageTemplates[language];
+      document.getElementById('code').placeholder = `Write your ${language.charAt(0).toUpperCase() + language.slice(1)} code here...`;
+    });
+
+    // Set initial template
+    document.getElementById('code').value = languageTemplates.python;
+
+    // Run code function
+    async function runCode() {
+      const code = document.getElementById('code').value;
+      const language = document.getElementById('language').value;
+      
+      if (!code.trim()) {
+        alert('Please write some code first!');
+        return;
+      }
+
+      // Show loading state
+      document.getElementById('runSpinner').style.display = 'inline-block';
+      document.getElementById('runIcon').style.display = 'none';
+      
+      try {
+        const response = await fetch(`{% url 'run_submission' problem.id %}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: `code=${encodeURIComponent(code)}&language=${language}`
+        });
+        
+        const html = await response.text();
+        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-play me-2"></i>Test Results';
+        document.getElementById('modalBody').innerHTML = html;
+        
+        const modal = new bootstrap.Modal(document.getElementById('resultsModal'));
+        modal.show();
+      } catch (error) {
+        alert('Error running code: ' + error.message);
+      } finally {
+        // Hide loading state
+        document.getElementById('runSpinner').style.display = 'none';
+        document.getElementById('runIcon').style.display = 'inline-block';
+      }
+    }
+
+    // Submit code function
+    async function submitCode() {
+      const code = document.getElementById('code').value;
+      const language = document.getElementById('language').value;
+      
+      if (!code.trim()) {
+        alert('Please write some code first!');
+        return;
+      }
+
+      const confirmed = confirm('Are you sure you want to submit this solution? This will be your official submission.');
+      if (!confirmed) return;
+
+      // Show loading state
+      document.getElementById('submitSpinner').style.display = 'inline-block';
+      document.getElementById('submitIcon').style.display = 'none';
+      
+      try {
+        const response = await fetch(`{% url 'submit_solution' problem.id %}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: `code=${encodeURIComponent(code)}&language=${language}`
+        });
+        
+        // Check if response is a redirect (Django redirect response)
+        if (response.redirected || response.url.includes('my_submissions')) {
+          // Redirect to submissions page
+          window.location.href = "{% url 'my_submissions' %}";
+        } else {
+          // Fallback: if for some reason we get HTML response, redirect anyway
+          window.location.href = "{% url 'my_submissions' %}";
+        }
+      } catch (error) {
+        alert('Error submitting code: ' + error.message);
+      } finally {
+        // Hide loading state
+        document.getElementById('submitSpinner').style.display = 'none';
+        document.getElementById('submitIcon').style.display = 'inline-block';
+      }
+    }
+
+    // AI Hint function with Enhanced UX
+    async function getAIHint() {
+      const code = document.getElementById('code').value.trim();
+      const language = document.getElementById('language').value;
+      
+      // Show loading state
+      document.getElementById('hintSpinner').style.display = 'inline-block';
+      document.getElementById('hintIcon').style.display = 'none';
+      
+      // Show modal with enhanced loading
+      const hintModal = new bootstrap.Modal(document.getElementById('hintModal'));
+      document.getElementById('hintModalBody').innerHTML = `
+        <div class="text-center p-5">
+          <div style="width: 80px; height: 80px; margin: 0 auto 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite;">
+            <i class="fas fa-robot text-white" style="font-size: 2rem;"></i>
+          </div>
+          <h5 style="color: #667eea; font-weight: 700; margin-bottom: 15px;">🤖 AI Analyzing Your Code</h5>
+          <p class="mb-0" style="color: #64748b; line-height: 1.6;">Our AI is carefully analyzing your code and the problem requirements to generate a personalized hint...</p>
+          <div style="margin-top: 20px;">
+            <div class="progress" style="height: 8px; border-radius: 10px;">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+            </div>
+          </div>
+        </div>
+      `;
+      hintModal.show();
+      
+      try {
+        const response = await fetch(`{% url 'get_ai_hint' %}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: JSON.stringify({
+            problem_id: "{{ problem.id }}",
+            user_code: code,
+            language: language
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          document.getElementById('hintModalBody').innerHTML = `
+            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 20px; border-radius: 15px; margin-bottom: 25px; border: 1px solid #bbf7d0;">
+              <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-lightbulb text-white" style="font-size: 1.2rem;"></i>
+                </div>
+                <div>
+                  <h5 style="margin: 0; color: #065f46; font-weight: 700;">💡 AI Hint Generated!</h5>
+                  <p style="margin: 5px 0 0 0; color: #047857;">Personalized guidance to help you solve this problem</p>
+                </div>
+              </div>
+            </div>
+            <div style="background: white; padding: 25px; border-radius: 15px; border: 1px solid #e5e7eb; margin-bottom: 20px;">
+              <h6 style="color: #374151; margin-bottom: 15px; font-weight: 700; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-robot" style="color: #667eea;"></i>Your AI Coding Mentor Says:
+              </h6>
+              <div style="white-space: pre-wrap; line-height: 1.8; color: #374151; font-size: 1rem;">${data.hint}</div>
+            </div>
+            <div style="background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%); padding: 15px 20px; border-radius: 12px; text-align: center; border: 1px solid #fde68a;">
+              <span style="color: #92400e; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-magic-wand-sparkles" style="margin-right: 8px;"></i>Powered by ${data.provider} AI
+              </span>
+            </div>
+          `;
+          
+          // Show success notification
+          showHintNotification('AI hint generated successfully! 🎉', 'success');
+        } else {
+          document.getElementById('hintModalBody').innerHTML = `
+            <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 20px; border-radius: 15px; margin-bottom: 25px; border: 1px solid #fecaca;">
+              <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-exclamation-triangle text-white" style="font-size: 1.2rem;"></i>
+                </div>
+                <div>
+                  <h5 style="margin: 0; color: #991b1b; font-weight: 700;">⚠️ Service Temporarily Unavailable</h5>
+                  <p style="margin: 5px 0 0 0; color: #b91c1c;">${data.error}</p>
+                </div>
+              </div>
+            </div>
+            <div style="background: white; padding: 25px; border-radius: 15px; border: 1px solid #e5e7eb;">
+              <h6 style="color: #374151; margin-bottom: 20px; font-weight: 700;">💡 General Problem-Solving Tips:</h6>
+              <div style="display: grid; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 15px; background: #f8fafc; border-radius: 10px; border-left: 4px solid #3b82f6;">
+                  <i class="fas fa-puzzle-piece" style="color: #3b82f6;"></i>
+                  <span style="color: #374151;">Break down the problem into smaller, manageable steps</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; padding: 15px; background: #f8fafc; border-radius: 10px; border-left: 4px solid #10b981;">
+                  <i class="fas fa-target" style="color: #10b981;"></i>
+                  <span style="color: #374151;">Think about the input format and expected output</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; padding: 15px; background: #f8fafc; border-radius: 10px; border-left: 4px solid #f59e0b;">
+                  <i class="fas fa-exclamation-circle" style="color: #f59e0b;"></i>
+                  <span style="color: #374151;">Consider edge cases (empty input, single element, etc.)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; padding: 15px; background: #f8fafc; border-radius: 10px; border-left: 4px solid #8b5cf6;">
+                  <i class="fas fa-robot" style="color: #8b5cf6;"></i>
+                  <span style="color: #374151;">Visit the <a href="/problems/ai/dashboard/" style="color: #8b5cf6; text-decoration: none; font-weight: 600;">AI Dashboard</a> for more help!</span>
+                </div>
+              </div>
+            </div>
+          `;
+          
+          showHintNotification('AI service temporarily unavailable', 'error');
+        }
+      } catch (error) {
+        document.getElementById('hintModalBody').innerHTML = `
+          <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 20px; border-radius: 15px; margin-bottom: 25px; border: 1px solid #fecaca;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-wifi text-white" style="font-size: 1.2rem;"></i>
+              </div>
+              <div>
+                <h5 style="margin: 0; color: #991b1b; font-weight: 700;">🌐 Connection Error</h5>
+                <p style="margin: 5px 0 0 0; color: #b91c1c;">Please check your internet connection and try again</p>
+              </div>
+            </div>
+          </div>
+          <div style="text-align: center; padding: 20px;">
+            <button class="btn btn-primary" onclick="getAIHint()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 12px 30px; border-radius: 10px; font-weight: 600;">
+              <i class="fas fa-refresh me-2"></i>Try Again
+            </button>
+          </div>
+        `;
+        
+        showHintNotification('Connection failed. Please try again.', 'error');
+      } finally {
+        // Hide loading state
+        document.getElementById('hintSpinner').style.display = 'none';
+        document.getElementById('hintIcon').style.display = 'inline-block';
+      }
+    }
+
+    // Notification system for hints
+    function showHintNotification(message, type) {
+      const existing = document.querySelector('.hint-notification');
+      if (existing) existing.remove();
+      
+      const notification = document.createElement('div');
+      notification.className = 'hint-notification';
+      notification.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 12px;
+        color: white;
+        font-weight: 600;
+        z-index: 1100;
+        animation: slideInUp 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+        max-width: 350px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      `;
+      
+      if (type === 'success') {
+        notification.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+        notification.innerHTML = `✨ ${message}`;
+      } else {
+        notification.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+        notification.innerHTML = `⚠️ ${message}`;
+      }
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.remove();
+        }
+      }, 3000);
+    }
+
+    // Add CSS for hint notifications
+    const hintStyle = document.createElement('style');
+    hintStyle.textContent = `
+      @keyframes slideInUp {
+        from { transform: translateY(100%); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+    `;
+    document.head.appendChild(hintStyle);
+  </script>
+</body>
+</html>

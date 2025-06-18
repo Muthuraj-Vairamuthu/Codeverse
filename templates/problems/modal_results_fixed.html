@@ -1,0 +1,146 @@
+<div class="results-container">
+  {% if results %}
+    <div class="summary-section mb-4">
+      <div class="row text-center">
+        <div class="col-3">
+          <div class="stat-card">
+            <div class="stat-number text-primary">{{ results|length }}</div>
+            <div class="stat-label">Total Tests</div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="stat-card">
+            <div class="stat-number text-success" id="passed-count">0</div>
+            <div class="stat-label">Passed</div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="stat-card">
+            <div class="stat-number text-danger" id="failed-count">0</div>
+            <div class="stat-label">Failed</div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="stat-card">
+            <div class="stat-number text-info" id="success-rate">0%</div>
+            <div class="stat-label">Success Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-cases">
+      {% for result in results %}
+        <div class="test-case {% if result.passed %}passed{% else %}failed{% endif %}">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="mb-0">Test Case {{ forloop.counter }}</h6>
+            <span class="badge {% if result.passed %}bg-success{% else %}bg-danger{% endif %}">
+              {% if result.passed %}
+                <i class="fas fa-check me-1"></i>Passed
+              {% else %}
+                <i class="fas fa-times me-1"></i>Failed
+              {% endif %}
+            </span>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-4">
+              <small class="text-muted fw-semibold">Input:</small>
+              <div class="code-block-small">{{ result.input }}</div>
+            </div>
+            <div class="col-md-4">
+              <small class="text-muted fw-semibold">Expected:</small>
+              <div class="code-block-small">{{ result.expected }}</div>
+            </div>
+            <div class="col-md-4">
+              <small class="text-muted fw-semibold">Your Output:</small>
+              <div class="code-block-small">{{ result.actual }}</div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center py-4">
+      <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+      <h5>No test results available</h5>
+      <p class="text-muted">There was an issue running your code. Please try again.</p>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+.results-container {
+  font-family: 'Inter', sans-serif;
+}
+
+.stat-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.test-case {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.test-case.passed {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+
+.test-case.failed {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.code-block-small {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.badge {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+</style>
+
+<script>
+// Calculate and display correct statistics
+document.addEventListener('DOMContentLoaded', function() {
+    // Pass results as JSON from backend to JS
+    const jsResults = JSON.parse('{{ results|tojson|safe }}');
+    
+    const passedCount = jsResults.filter(r => r.passed).length;
+    const failedCount = jsResults.filter(r => !r.passed).length;
+    const successRate = jsResults.length > 0 ? Math.round((passedCount / jsResults.length) * 100) : 0;
+    
+    document.getElementById('passed-count').textContent = passedCount;
+    document.getElementById('failed-count').textContent = failedCount;
+    document.getElementById('success-rate').textContent = successRate + '%';
+});
+</script>

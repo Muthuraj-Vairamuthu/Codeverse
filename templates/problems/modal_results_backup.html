@@ -1,0 +1,758 @@
+<div class="results-container">
+  {% if results %}
+    <!-- Enhanced Header with Status -->
+    <div class="results-header mb-4">
+      <div class="d-flex align-items-center justify-content-between">
+        <h4 class="mb-0">
+          <i class="fas fa-chart-line me-2 text-primary"></i>
+          Test Results
+        </h4>
+        <div class="overall-status" id="overall-status">
+          <i class="fas fa-spinner fa-spin me-2"></i>Calculating...
+        </div>
+      </div>
+    </div>
+
+    <!-- Modern Stats Cards -->
+    <div class="stats-grid mb-4">
+      <div class="stat-card total-tests">
+        <div class="stat-icon">
+          <i class="fas fa-list-check"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ results|length }}</div>
+          <div class="stat-label">Total Tests</div>
+        </div>
+      </div>
+
+      <div class="stat-card passed-tests">
+        <div class="stat-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number text-success" id="passed-count">0</div>
+          <div class="stat-label">Passed</div>
+        </div>
+      </div>
+
+      <div class="stat-card success-rate">
+        <div class="stat-icon">
+          <i class="fas fa-percentage"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number" id="success-rate">0%</div>
+          <div class="stat-label">Success Rate</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Test Cases with Enhanced Design -->
+    <div class="test-cases-container">
+      <h5 class="section-title mb-3">
+        <i class="fas fa-flask me-2"></i>
+        Test Cases Details
+      </h5>
+      
+      <div class="test-cases">
+        {% for result in results %}
+          <div class="test-case {% if result.passed %}test-passed{% else %}test-failed{% endif %}" data-passed="{% if result.passed %}true{% else %}false{% endif %}">
+            <div class="test-case-header">
+              <div class="test-info">
+                <h6 class="test-title">
+                  <i class="fas fa-vial me-2"></i>
+                  Test Case {{ forloop.counter }}
+                </h6>
+                <div class="test-time">
+                  <i class="fas fa-clock me-1"></i>
+                  <span class="execution-time">~0.1ms</span>
+                </div>
+              </div>
+              <div class="test-status">
+                {% if result.passed %}
+                  <span class="status-badge status-success">
+                    <i class="fas fa-check me-1"></i>PASSED
+                  </span>
+                {% else %}
+                  <span class="status-badge status-failed">
+                    <i class="fas fa-times me-1"></i>FAILED
+                  </span>
+                {% endif %}
+              </div>
+            </div>
+            
+            <div class="test-case-content">
+              <div class="io-grid">
+                <div class="io-section input-section">
+                  <div class="io-header">
+                    <i class="fas fa-arrow-right me-2"></i>
+                    <span class="io-label">Input</span>
+                  </div>
+                  <div class="io-content">{{ result.input|linebreaks }}</div>
+                </div>
+                
+                <div class="io-section expected-section">
+                  <div class="io-header">
+                    <i class="fas fa-target me-2"></i>
+                    <span class="io-label">Expected Output</span>
+                  </div>
+                  <div class="io-content">{{ result.expected }}</div>
+                </div>
+                
+                <div class="io-section output-section {% if not result.passed %}output-mismatch{% endif %}">
+                  <div class="io-header">
+                    <i class="fas fa-code me-2"></i>
+                    <span class="io-label">Your Output</span>
+                  </div>
+                  <div class="io-content">{{ result.actual }}</div>
+                </div>
+              </div>
+
+              {% if not result.passed %}
+                <div class="error-explanation">
+                  <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </div>
+                  <div class="error-content">
+                    <h6>Output Mismatch</h6>
+                    <p>Your output doesn't match the expected result. Please review your logic and try again.</p>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Final Results Summary -->
+    <div class="final-summary mt-4" id="final-summary">
+      <!-- Will be populated by JavaScript -->
+    </div>
+
+    <script>
+    // Enhanced statistics calculation with animations
+    document.addEventListener('DOMContentLoaded', function() {
+        const results = [
+            {% for result in results %}
+                {passed: {% if result.passed %}true{% else %}false{% endif %}},
+            {% endfor %}
+        ];
+        
+        const totalTests = results.length;
+        const passedCount = results.filter(r => r.passed).length;
+        const failedCount = totalTests - passedCount;
+        const successRate = totalTests > 0 ? Math.round((passedCount / totalTests) * 100) : 0;
+        
+        // Update counters with animation
+        animateCounter('passed-count', passedCount);
+        
+        // Update success rate with color coding
+        const successRateElement = document.getElementById('success-rate');
+        successRateElement.textContent = successRate + '%';
+        
+        // Color code the success rate
+        if (successRate === 100) {
+            successRateElement.className = 'stat-number text-success';
+        } else if (successRate >= 70) {
+            successRateElement.className = 'stat-number text-warning';
+        } else {
+            successRateElement.className = 'stat-number text-danger';
+        }
+        
+        // Update overall status
+        const overallStatus = document.getElementById('overall-status');
+        if (successRate === 100) {
+            overallStatus.innerHTML = '<i class="fas fa-trophy me-2 text-warning"></i><span class="text-success fw-bold">All Tests Passed!</span>';
+        } else if (successRate >= 50) {
+            overallStatus.innerHTML = '<i class="fas fa-check-circle me-2 text-warning"></i><span class="text-warning fw-bold">Partially Passed</span>';
+        } else {
+            overallStatus.innerHTML = '<i class="fas fa-times-circle me-2 text-danger"></i><span class="text-danger fw-bold">Tests Failed</span>';
+        }
+        
+        // Create final summary
+        createFinalSummary(totalTests, passedCount, failedCount, successRate);
+        
+        // Add execution time animation
+        document.querySelectorAll('.execution-time').forEach((el, index) => {
+            setTimeout(() => {
+                el.textContent = (Math.random() * 0.5 + 0.1).toFixed(2) + 'ms';
+            }, index * 100);
+        });
+    });
+
+    function animateCounter(elementId, targetValue) {
+        const element = document.getElementById(elementId);
+        let currentValue = 0;
+        const increment = targetValue / 20;
+        const timer = setInterval(() => {
+            currentValue += increment;
+            if (currentValue >= targetValue) {
+                currentValue = targetValue;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(currentValue);
+        }, 30);
+    }
+
+    function createFinalSummary(total, passed, failed, rate) {
+        const summaryElement = document.getElementById('final-summary');
+        let summaryClass = '';
+        let summaryIcon = '';
+        let summaryMessage = '';
+        
+        if (rate === 100) {
+            summaryClass = 'success-summary';
+            summaryIcon = 'fas fa-trophy';
+            summaryMessage = `🎉 Excellent! All ${total} test cases passed. Your solution is correct!`;
+        } else if (rate >= 50) {
+            summaryClass = 'warning-summary';
+            summaryIcon = 'fas fa-exclamation-triangle';
+            summaryMessage = `⚠️ ${passed}/${total} test cases passed. You're on the right track, but there are some edge cases to fix.`;
+        } else {
+            summaryClass = 'danger-summary';
+            summaryIcon = 'fas fa-bug';
+            summaryMessage = `🔧 ${failed}/${total} test cases failed. Review your algorithm and try again.`;
+        }
+        
+        summaryElement.innerHTML = `
+            <div class="summary-card ${summaryClass}">
+                <div class="summary-icon">
+                    <i class="${summaryIcon}"></i>
+                </div>
+                <div class="summary-content">
+                    <p class="summary-message">${summaryMessage}</p>
+                    <div class="summary-actions">
+                        ${rate === 100 ? 
+                            '<button class="btn btn-success btn-sm me-2"><i class="fas fa-arrow-right me-1"></i>Next Problem</button>' : 
+                            '<button class="btn btn-primary btn-sm me-2"><i class="fas fa-redo me-1"></i>Try Again</button>'
+                        }
+                        <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-lightbulb me-1"></i>Hint</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    </script>
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(currentValue);
+        }, 30);
+    }
+
+    function createFinalSummary(total, passed, failed, rate) {
+        const summaryElement = document.getElementById('final-summary');
+        let summaryClass = '';
+        let summaryIcon = '';
+        let summaryMessage = '';
+        
+        if (rate === 100) {
+            summaryClass = 'success-summary';
+            summaryIcon = 'fas fa-trophy';
+            summaryMessage = `🎉 Excellent! All ${total} test cases passed. Your solution is correct!`;
+        } else if (rate >= 50) {
+            summaryClass = 'warning-summary';
+            summaryIcon = 'fas fa-exclamation-triangle';
+            summaryMessage = `⚠️ ${passed}/${total} test cases passed. You're on the right track, but there are some edge cases to fix.`;
+        } else {
+            summaryClass = 'danger-summary';
+            summaryIcon = 'fas fa-bug';
+            summaryMessage = `🔧 ${failed}/${total} test cases failed. Review your algorithm and try again.`;
+        }
+        
+        summaryElement.innerHTML = `
+            <div class="summary-card ${summaryClass}">
+                <div class="summary-icon">
+                    <i class="${summaryIcon}"></i>
+                </div>
+                <div class="summary-content">
+                    <p class="summary-message">${summaryMessage}</p>
+                    <div class="summary-actions">
+                        ${rate === 100 ? 
+                            '<button class="btn btn-success btn-sm me-2"><i class="fas fa-arrow-right me-1"></i>Next Problem</button>' : 
+                            '<button class="btn btn-primary btn-sm me-2"><i class="fas fa-redo me-1"></i>Try Again</button>'
+                        }
+                        <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-lightbulb me-1"></i>Hint</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    </script>
+  {% else %}
+    <div class="text-center py-4">
+      <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+      <h5>No test results available</h5>
+      <p class="text-muted">There was an issue running your code. Please try again.</p>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+.results-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.results-header {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+
+.results-header h4 {
+  color: #2d3748;
+  font-weight: 700;
+}
+
+.overall-status {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.total-tests .stat-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
+.passed-tests .stat-icon { background: linear-gradient(135deg, #10b981, #059669); }
+.success-rate .stat-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #2d3748;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #718096;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.section-title {
+  color: #2d3748;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.test-cases {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.test-case {
+  background: white;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border-left: 4px solid #e2e8f0;
+}
+
+.test-case.test-passed {
+  border-left-color: #10b981;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+.test-case.test-failed {
+  border-left-color: #ef4444;
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+}
+
+.test-case:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.test-case-header {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.test-title {
+  color: #2d3748;
+  font-weight: 700;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.test-time {
+  color: #718096;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.execution-time {
+  font-family: 'JetBrains Mono', 'Monaco', monospace;
+  background: #f7fafc;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-success {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.status-failed {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.test-case-content {
+  padding: 1.5rem;
+}
+
+.io-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.io-section {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.io-section:hover {
+  border-color: #cbd5e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.output-section.output-mismatch {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.io-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.io-content {
+  font-family: 'JetBrains Mono', 'Monaco', 'Consolas', monospace;
+  font-size: 0.875rem;
+  background: white;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 3rem;
+  line-height: 1.5;
+}
+
+.error-explanation {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.error-icon {
+  color: #ef4444;
+  font-size: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.error-content h6 {
+  color: #991b1b;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.error-content p {
+  color: #7f1d1d;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.final-summary {
+  margin-top: 2rem;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.success-summary {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 1px solid #bbf7d0;
+}
+
+.warning-summary {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1px solid #fde68a;
+}
+
+.danger-summary {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 1px solid #fecaca;
+}
+
+.summary-icon {
+  font-size: 3rem;
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.success-summary .summary-icon {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.warning-summary .summary-icon {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
+
+.danger-summary .summary-icon {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.summary-content {
+  flex: 1;
+}
+
+.summary-message {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.summary-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.btn-outline-secondary {
+  background: white;
+  color: #6b7280;
+  border: 2px solid #e5e7eb;
+}
+
+.btn-outline-secondary:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+/* Custom scrollbar */
+.test-cases::-webkit-scrollbar {
+  width: 6px;
+}
+
+.test-cases::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+}
+
+.test-cases::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.test-cases::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* No results state */
+.text-center.py-4 {
+  padding: 4rem 2rem !important;
+  background: white;
+  border-radius: 16px;
+  border: 2px dashed #e5e7eb;
+  text-align: center;
+}
+
+.text-center.py-4 i {
+  opacity: 0.6;
+  color: #f59e0b;
+}
+
+.text-center.py-4 h5 {
+  color: #374151;
+  font-weight: 700;
+  margin: 1rem 0 0.5rem;
+}
+
+.text-center.py-4 p {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .results-container {
+    padding: 1rem;
+  }
+  
+  .io-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .test-case-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .summary-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .summary-actions {
+    justify-content: center;
+  }
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.test-case {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.test-case:nth-child(2) { animation-delay: 0.1s; }
+.test-case:nth-child(3) { animation-delay: 0.2s; }
+.test-case:nth-child(4) { animation-delay: 0.3s; }
+</style>

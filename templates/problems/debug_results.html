@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .debug-info { background: #e8f4fd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .test-result { background: white; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #28a745; }
+        .test-result.failed { border-left-color: #dc3545; }
+        .stats { background: #fff3cd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🐛 Debug Test Results</h1>
+    
+    <div class="debug-info">
+        <h3>📊 Backend Data</h3>
+        <p><strong>Problem:</strong> {{ problem.title }}</p>
+        <p><strong>Language:</strong> {{ language }}</p>
+        <p><strong>All Passed:</strong> {{ all_passed }}</p>
+        <p><strong>Results Count:</strong> {{ results|length }}</p>
+        <p><strong>Is Submission:</strong> {{ is_submission }}</p>
+        {% if submission %}
+        <p><strong>Submission Verdict:</strong> {{ submission.verdict }}</p>
+        {% endif %}
+    </div>
+    
+    <div class="stats">
+        <h3>📈 Statistics</h3>
+        <p><strong>Total Tests:</strong> <span id="total-tests">{{ results|length }}</span></p>
+        <p><strong>Passed Tests:</strong> <span id="passed-tests">Calculating...</span></p>
+        <p><strong>Success Rate:</strong> <span id="success-rate">Calculating...</span></p>
+    </div>
+    
+    <div class="debug-info">
+        <h3>💻 Code Submitted</h3>
+        <pre style="background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto;">{{ code }}</pre>
+    </div>
+    
+    <h3>🧪 Test Case Results</h3>
+    {% for result in results %}
+    <div class="test-result {% if not result.passed %}failed{% endif %}">
+        <h4>Test Case {{ forloop.counter }} 
+            {% if result.passed %}
+                <span style="color: #28a745;">✅ PASSED</span>
+            {% else %}
+                <span style="color: #dc3545;">❌ FAILED</span>
+            {% endif %}
+        </h4>
+        <p><strong>Input:</strong> <code>{{ result.input|default:"(no input)" }}</code></p>
+        <p><strong>Expected:</strong> <code>{{ result.expected }}</code></p>
+        <p><strong>Your Output:</strong> <code>{{ result.actual }}</code></p>
+        <p><strong>Match:</strong> {{ result.passed }}</p>
+    </div>
+    {% empty %}
+    <div class="test-result failed">
+        <h4>❌ No Test Results Found</h4>
+        <p>No test cases were found or executed.</p>
+    </div>
+    {% endfor %}
+    
+    <div class="debug-info">
+        <h3>🔧 JavaScript Test Data</h3>
+        <pre id="js-data-display">Loading...</pre>
+    </div>
+
+    <script>
+        console.log('🐛 Debug Test Results Page Loaded');
+        
+        // Show the raw test results data
+        const testResults = [
+            {% for result in results %}
+            {
+                passed: {% if result.passed %}true{% else %}false{% endif %},
+                input: "{{ result.input|escapejs }}",
+                expected: "{{ result.expected|escapejs }}",
+                actual: "{{ result.actual|escapejs }}"
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+        
+        console.log('📊 Test Results Data:', testResults);
+        
+        // Display the raw JS data
+        document.getElementById('js-data-display').textContent = JSON.stringify(testResults, null, 2);
+        
+        // Calculate statistics
+        const totalTests = testResults.length;
+        const passedTests = testResults.filter(result => result.passed).length;
+        const successRate = totalTests > 0 ? Math.round((passedTests / totalTests) * 100) : 0;
+        
+        console.log(`📈 Statistics: ${passedTests}/${totalTests} passed (${successRate}%)`);
+        
+        // Update the statistics immediately
+        document.getElementById('passed-tests').textContent = passedTests;
+        document.getElementById('success-rate').textContent = successRate + '%';
+        
+        // Color code the success rate
+        const rateElement = document.getElementById('success-rate');
+        if (successRate === 100) {
+            rateElement.style.color = '#28a745';
+            rateElement.style.fontWeight = 'bold';
+        } else if (successRate >= 50) {
+            rateElement.style.color = '#ffc107';
+            rateElement.style.fontWeight = 'bold';
+        } else {
+            rateElement.style.color = '#dc3545';
+            rateElement.style.fontWeight = 'bold';
+        }
+        
+        console.log('✅ JavaScript statistics updated successfully');
+        
+        // Final verification
+        if (totalTests > 0 && testResults.length > 0) {
+            console.log('✅ Backend-Frontend connection is working perfectly!');
+        } else {
+            console.log('❌ No test data received from backend');
+        }
+    </script>
+</body>
+</html>
