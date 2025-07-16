@@ -16,10 +16,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . /app/
 
 # Expose port 8000 for Django
-
 EXPOSE 8000
 
-
-
-# Run migrations and start server
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+# Run migrations, load data, and start the server
+CMD ["sh", "-c", "python manage.py migrate && python manage.py loaddata problems.json && gunicorn myproject.wsgi:application --bind 0.0.0.0:8000"]
