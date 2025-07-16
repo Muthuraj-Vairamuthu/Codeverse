@@ -15,8 +15,11 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy project files
 COPY . /app/
 
-# Expose port 8000 for Django
+# Collect static files (optional, for production setup)
+RUN python manage.py collectstatic --noinput
+
+# Expose port 8000
 EXPOSE 8000
 
-# Run migrations, load data, and start the server
-CMD ["sh", "-c", "python manage.py migrate && python manage.py loaddata problems.json && gunicorn myproject.wsgi:application --bind 0.0.0.0:8000"]
+# Start the Django server with Gunicorn
+CMD ["gunicorn", "myproject.wsgi:application", "--bind", "0.0.0.0:8000"]
