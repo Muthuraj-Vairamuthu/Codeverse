@@ -1,0 +1,6 @@
+Django>=4.2.0
+social-auth-app-django
+docker
+requests
+psutil
+python-dotenv

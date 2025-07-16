@@ -1,0 +1,449 @@
+{% extends 'base.html' %}
+{% load problem_filters %}
+{% block title %}Problems | CodeVerse{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <!-- Header Section with Creative Touch -->
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div class="d-flex align-items-center">
+      <div class="problem-icon-container me-3">
+        <span style="font-size: 2.5rem;">🧩</span>
+        <span class="pulse-dot"></span>
+      </div>
+      <div>
+        <h2 class="fw-bold m-0 gradient-text">Coding Problems</h2>
+        <p class="text-muted mb-0">{{ problems.count }} challenges waiting for you</p>
+      </div>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-primary btn-sm modern-btn" data-bs-toggle="modal" data-bs-target="#filterModal" aria-label="Open advanced filters">
+        <i class="fas fa-filter me-1"></i> Filters
+      </button>
+      {% if selected_company or selected_difficulties or selected_tags or request.GET.search %}
+      <button class="btn btn-outline-secondary btn-sm modern-btn" onclick="clearFilters()" aria-label="Clear all filters">
+        <i class="fas fa-times me-1"></i> Clear
+      </button>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Quick Company Filters -->
+  <div class="mb-4">
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <small class="text-muted fw-semibold me-2">Quick filters:</small>
+      {% for company in companies %}
+        <a href="?company={{ company }}{% if request.GET.difficulty %}&difficulty={{ request.GET.difficulty }}{% endif %}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+           class="company-filter-btn {{ company|lower }} {% if selected_company == company %}active{% endif %}"
+           aria-label="Filter by {{ company }}">
+          {{ company }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+  
+  <!-- Problems Grid -->
+  <div class="problems-grid">
+    {% for problem in problems %}
+      <div class="problem-card">
+        <a href="{% url 'problem_detail' problem.id %}" class="problem-link">
+          <div class="problem-header">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="problem-title">{{ problem.title }}</h5>
+              <span class="difficulty-badge difficulty-{{ problem.difficulty|lower }}">
+                {{ problem.difficulty }}
+              </span>
+            </div>
+            
+            <div class="company-badge company-{{ problem.company|lower|cut:' ' }}">
+              <i class="fas fa-building me-1"></i>{{ problem.company }}
+            </div>
+          </div>
+          
+          <div class="problem-body">
+            {% if problem.tags %}
+            <div class="tags-container">
+              {% for tag in problem.tags|split:',' %}
+                <span class="tag-badge">{{ tag|trim }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div class="problem-meta">
+              <small class="text-muted">
+                <i class="far fa-clock me-1"></i>{{ problem.created_at|date:"M d, Y" }}
+              </small>
+            </div>
+          </div>
+          
+          <div class="problem-footer">
+            <div class="solve-indicator">
+              <i class="fas fa-arrow-right"></i>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% empty %}
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <h5>No problems found</h5>
+        <p class="text-muted">Try adjusting your filters or explore different categories</p>
+        <button class="btn btn-primary empty-btn" onclick="clearFilters()">Show All Problems</button>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Advanced Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">
+          <i class="fas fa-filter me-2"></i>Advanced Filters
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="filterForm" method="GET">
+          <div class="row">
+            <!-- Difficulty Filter -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-semibold">Difficulty</label>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Easy" name="difficulty" id="difficultyEasy" 
+                       {% if 'Easy' in selected_difficulties %}checked{% endif %}>
+                <label class="form-check-label" for="difficultyEasy">Easy</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Medium" name="difficulty" id="difficultyMedium"
+                       {% if 'Medium' in selected_difficulties %}checked{% endif %}>
+                <label class="form-check-label" for="difficultyMedium">Medium</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Hard" name="difficulty" id="difficultyHard"
+                       {% if 'Hard' in selected_difficulties %}checked{% endif %}>
+                <label class="form-check-label" for="difficultyHard">Hard</label>
+              </div>
+            </div>
+
+            <!-- Company Filter -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-semibold">Company</label>
+              <select class="form-select" name="company">
+                <option value="">All Companies</option>
+                {% for company in companies %}
+                  <option value="{{ company }}" {% if company == selected_company %}selected{% endif %}>
+                    {{ company }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Tags Filter -->
+            <div class="col-12 mb-3">
+              <label class="form-label fw-semibold">Tags</label>
+              <div class="tags-filter-container">
+                {% for tag in tags %}
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="{{ tag }}" name="tags" 
+                           id="tag{{ forloop.counter }}" {% if tag in selected_tags %}checked{% endif %}>
+                    <label class="form-check-label tag-filter-label" for="tag{{ forloop.counter }}">
+                      {{ tag }}
+                    </label>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <!-- Search Filter -->
+            <div class="col-12 mb-3">
+              <label class="form-label fw-semibold">Search</label>
+              <input type="text" class="form-control" name="search" placeholder="Search problems by title..." 
+                     value="{{ request.GET.search }}">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="clearAllFilters()">Clear All</button>
+        <button type="button" class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Creative and Modern Styling */
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.problem-icon-container {
+  position: relative;
+}
+
+.pulse-dot {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 12px;
+  height: 12px;
+  background: #10b981;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.modern-btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.modern-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.company-filter-btn {
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.company-filter-btn.google { background: #ea4335; color: white; }
+.company-filter-btn.meta { background: #1877f2; color: white; }
+.company-filter-btn.amazon { background: #ff9900; color: white; }
+.company-filter-btn.microsoft { background: #00a1f1; color: white; }
+.company-filter-btn.apple { background: #000; color: white; }
+.company-filter-btn.netflix { background: #e50914; color: white; }
+
+.company-filter-btn:hover, .company-filter-btn.active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: white !important;
+}
+
+.problems-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.problem-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.problem-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+}
+
+.problem-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding: 1.5rem;
+  height: 100%;
+}
+
+.problem-title {
+  color: #2d3748;
+  font-weight: 600;
+  margin-bottom: 0;
+  line-height: 1.4;
+}
+
+.difficulty-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.difficulty-easy { background: #d1fae5; color: #065f46; }
+.difficulty-medium { background: #fef3c7; color: #92400e; }
+.difficulty-hard { background: #fee2e2; color: #991b1b; }
+
+.company-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: #f3f4f6;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag-badge {
+  background: #e0e7ff;
+  color: #3730a3;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.problem-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.solve-indicator {
+  color: #6b7280;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.problem-card:hover .solve-indicator {
+  color: #667eea;
+  transform: translateX(4px);
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+/* Filter Modal Styles */
+.tags-filter-container {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #f8f9fa;
+}
+
+.tag-filter-label {
+  background: #e0e7ff;
+  color: #3730a3;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  margin-left: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag-filter-label:hover {
+  background: #c7d2fe;
+}
+
+.form-check-input:checked + .tag-filter-label {
+  background: #667eea;
+  color: white;
+}
+
+.empty-btn {
+  margin-top: 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.empty-btn:hover {
+  background: #764ba2;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(118,75,162,0.15);
+}
+
+@media (max-width: 768px) {
+  .problems-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .company-filter-btn {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+  
+  .tags-filter-container {
+    max-height: 150px;
+  }
+}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script>
+function clearFilters() {
+  window.location.href = '{% url "problem_list" %}';
+}
+
+function clearAllFilters() {
+  // Clear all filters and reload the page
+  const url = new URL(window.location.href);
+  url.searchParams.delete('difficulty');
+  url.searchParams.delete('company');
+  url.searchParams.delete('tags');
+  url.searchParams.delete('search');
+  window.location.href = url.toString();
+}
+
+function applyFilters() {
+  // Submit the filter form
+  document.getElementById('filterForm').submit();
+}
+
+// Add smooth scrolling and animations
+document.addEventListener('DOMContentLoaded', function() {
+  // Animate problem cards on scroll
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.problem-card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(card);
+  });
+});
+</script>
+{% endblock %}

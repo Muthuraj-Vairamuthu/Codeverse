@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ problem.title }} | CodeVerse</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/theme/dracula.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary-color: #667eea;
+      --secondary-color: #764ba2;
+      --success-color: #10b981;
+      --danger-color: #ef4444;
+      --warning-color: #f59e0b;
+      --bg-dark: #1a1b23;
+      --bg-light: #f8f9fa;
+      --text-muted: #6b7280;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    
+    .main-container {
+      background: white;
+      margin: 2rem auto;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      max-width: 1400px;
+    }
+    
+    .problem-header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 2rem;
+    }
+    
+    .problem-title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .problem-meta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    
+    .meta-badge {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .content-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      min-height: 70vh;
+    }
+    
+    .problem-content {
+      padding: 2rem;
+      background: #f8f9fa;
+      border-right: 1px solid #e9ecef;
+      overflow-y: auto;
+      max-height: 70vh;
+    }
+    
+    .code-content {
+      background: #1a1b23;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .code-header {
+      background: #2d3748;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #4a5568;
+      display: flex;
+      justify-content: between;
+      align-items: center;
+    }
+    
+    .language-selector {
+      background: #4a5568;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .code-editor-container {
+      flex: 1;
+      position: relative;
+    }
+    
+    .CodeMirror {
+      height: 100% !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 14px !important;
+      line-height: 1.5 !important;
+    }
+    
+    .code-actions {
+      background: #2d3748;
+      padding: 1rem 2rem;
+      border-top: 1px solid #4a5568;
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .btn-run {
+      background: var(--success-color);
+      border: none;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-run:hover {
+      background: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    
+    .btn-submit {
+      background: var(--primary-color);
+      border: none;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-submit:hover {
+      background: #5a67d8;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    
+    .section-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .section-title {
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .sample-box {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+    
+    .back-btn {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: none;
+      color: white;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+    
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      color: white;
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+    
+    .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top: 2px solid currentColor;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 1024px) {
+      .content-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .problem-content {
+        border-right: none;
+        border-bottom: 1px solid #e9ecef;
+        max-height: none;
+      }
+      
+      .main-container {
+        margin: 1rem;
+        border-radius: 16px;
+      }
+    }
+    
+    /* Custom scrollbar */
+    .problem-content::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .problem-content::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    
+    .problem-content::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+    }
+    
+    .problem-content::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+  </style>
+</head>
+<body>
+  <a href="{% url 'problem_list' %}" class="back-btn">
+    <i class="fas fa-arrow-left"></i>
+    Back to Problems
+  </a>
+
+  <div class="main-container">
+    <!-- Problem Header -->
+    <div class="problem-header">
+      <h1 class="problem-title">{{ problem.title }}</h1>
+      <div class="problem-meta">
+        <div class="meta-badge">
+          <i class="fas fa-signal"></i>
+          {{ problem.difficulty }}
+        </div>
+        <div class="meta-badge">
+          <i class="fas fa-building"></i>
+          {{ problem.company }}
+        </div>
+        {% if problem.tags %}
+          {% for tag in problem.get_tags_list %}
+            <div class="meta-badge">
+              <i class="fas fa-tag"></i>
+              {{ tag }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <div class="meta-badge">
+          <i class="fas fa-calendar"></i>
+          {{ problem.created_at|date:"M d, Y" }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-container">
+      <!-- Problem Description -->
+      <div class="problem-content">
+        <div class="section-card">
+          <h3 class="section-title">
+            <i class="fas fa-file-text"></i>
+            Problem Statement
+          </h3>
+          <p style="line-height: 1.6;">{{ problem.statement }}</p>
+        </div>
+
+        <div class="section-card">
+          <h4 class="section-title">
+            <i class="fas fa-download"></i>
+            Input Format
+          </h4>
+          <div class="sample-box">{{ problem.input_format }}</div>
+        </div>
+
+        <div class="section-card">
+          <h4 class="section-title">
+            <i class="fas fa-upload"></i>
+            Output Format
+          </h4>
+          <div class="sample-box">{{ problem.output_format }}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="section-card">
+              <h4 class="section-title">
+                <i class="fas fa-play"></i>
+                Sample Input
+              </h4>
+              <div class="sample-box">{{ problem.sample_input }}</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="section-card">
+              <h4 class="section-title">
+                <i class="fas fa-check"></i>
+                Sample Output
+              </h4>
+              <div class="sample-box">{{ problem.sample_output }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Editor -->
+      <div class="code-content">
+        <div class="code-header">
+          <div class="d-flex align-items-center gap-3">
+            <i class="fas fa-code text-white"></i>
+            <span class="text-white fw-semibold">Code Editor</span>
+          </div>
+          <select id="languageSelect" class="language-selector">
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+            <option value="javascript">JavaScript</option>
+            <option value="go">Go</option>
+            <option value="rust">Rust</option>
+          </select>
+        </div>
+        
+        <div class="code-editor-container">
+          <textarea id="codeEditor" name="code"># Write your Python code here...
+def solution():
+    pass
+
+solution()</textarea>
+        </div>
+        
+        <div class="code-actions">
+          <button type="button" class="btn-run" onclick="runCode()">
+            <div class="loading-spinner" id="runSpinner"></div>
+            <i class="fas fa-play" id="runIcon"></i>
+            Run Code
+          </button>
+          <button type="button" class="btn-submit" onclick="submitCode()">
+            <div class="loading-spinner" id="submitSpinner"></div>
+            <i class="fas fa-paper-plane" id="submitIcon"></i>
+            Submit Solution
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Modal -->
+  <div class="modal fade" id="resultsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="fas fa-chart-line me-2"></i>
+            <span id="modalTitle">Execution Results</span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          <!-- Results will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/python/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/clike/clike.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/go/go.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/rust/rust.min.js"></script>
+  <script>
+    // Initialize CodeMirror
+    let editor = CodeMirror.fromTextArea(document.getElementById('codeEditor'), {
+      theme: 'dracula',
+      lineNumbers: true,
+      mode: 'python',
+      indentUnit: 4,
+      lineWrapping: true,
+      autoCloseBrackets: true,
+      matchBrackets: true,
+      foldGutter: true,
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+    });
+
+    // Language templates
+    const languageTemplates = {
+      python: `# Write your Python code here...
+def solution():
+    pass
+
+solution()`,
+      java: `// Write your Java code here...
+// Note: Your main logic should be in the main method
+System.out.println("Hello World");`,
+      cpp: `// Write your C++ code here...
+// Common includes are already available
+cout << "Hello World" << endl;`,
+      javascript: `// Write your JavaScript code here...
+// Use readline() to read input
+console.log("Hello World");`,
+      go: `// Write your Go code here...
+// Scanner is available for input
+fmt.Println("Hello World")`,
+      rust: `// Write your Rust code here...
+// Lines iterator is available for input
+println!("Hello World");`
+    };
+
+    const languageModes = {
+      python: 'python',
+      java: 'text/x-java',
+      cpp: 'text/x-c++src',
+      javascript: 'javascript',
+      go: 'text/x-go',
+      rust: 'text/x-rustsrc'
+    };
+
+    // Handle language change
+    document.getElementById('languageSelect').addEventListener('change', function() {
+      const language = this.value;
+      editor.setValue(languageTemplates[language]);
+      editor.setOption('mode', languageModes[language]);
+    });
+
+    // Run code function
+    async function runCode() {
+      const code = editor.getValue();
+      const language = document.getElementById('languageSelect').value;
+      
+      if (!code.trim()) {
+        alert('Please write some code first!');
+        return;
+      }
+
+      // Show loading state
+      document.getElementById('runSpinner').style.display = 'block';
+      document.getElementById('runIcon').style.display = 'none';
+      
+      try {
+        const response = await fetch(`{% url 'run_submission' problem.id %}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: `code=${encodeURIComponent(code)}&language=${language}`
+        });
+        
+        const html = await response.text();
+        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-play me-2"></i>Test Results';
+        document.getElementById('modalBody').innerHTML = html;
+        
+        const modal = new bootstrap.Modal(document.getElementById('resultsModal'));
+        modal.show();
+      } catch (error) {
+        alert('Error running code: ' + error.message);
+      } finally {
+        // Hide loading state
+        document.getElementById('runSpinner').style.display = 'none';
+        document.getElementById('runIcon').style.display = 'block';
+      }
+    }
+
+    // Submit code function
+    async function submitCode() {
+      const code = editor.getValue();
+      const language = document.getElementById('languageSelect').value;
+      
+      if (!code.trim()) {
+        alert('Please write some code first!');
+        return;
+      }
+
+      const confirmed = confirm('Are you sure you want to submit this solution? This will be your official submission.');
+      if (!confirmed) return;
+
+      // Show loading state
+      document.getElementById('submitSpinner').style.display = 'block';
+      document.getElementById('submitIcon').style.display = 'none';
+      
+      try {
+        const response = await fetch(`{% url 'submit_solution' problem.id %}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: `code=${encodeURIComponent(code)}&language=${language}`
+        });
+        
+        const html = await response.text();
+        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submission Results';
+        document.getElementById('modalBody').innerHTML = html;
+        
+        const modal = new bootstrap.Modal(document.getElementById('resultsModal'));
+        modal.show();
+      } catch (error) {
+        alert('Error submitting code: ' + error.message);
+      } finally {
+        // Hide loading state
+        document.getElementById('submitSpinner').style.display = 'none';
+        document.getElementById('submitIcon').style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

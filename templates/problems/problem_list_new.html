@@ -1,0 +1,429 @@
+{% extends 'base.html' %}
+{% block title %}Problems | CodeVerse{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <!-- Header Section with Creative Touch -->
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div class="d-flex align-items-center">
+      <div class="problem-icon-container me-3">
+        <span style="font-size: 2.5rem;">🧩</span>
+        <span class="pulse-dot"></span>
+      </div>
+      <div>
+        <h2 class="fw-bold m-0 gradient-text">Coding Problems</h2>
+        <p class="text-muted mb-0">{{ problems.count }} challenges waiting for you</p>
+      </div>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-primary btn-sm modern-btn" data-bs-toggle="modal" data-bs-target="#filterModal">
+        <i class="fas fa-filter me-1"></i> Filters
+      </button>
+      <button class="btn btn-outline-secondary btn-sm modern-btn" onclick="clearFilters()">
+        <i class="fas fa-times me-1"></i> Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Quick Company Filters -->
+  <div class="mb-4">
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <small class="text-muted fw-semibold me-2">Quick filters:</small>
+      <a href="?company=Google" class="company-filter-btn google {% if selected_company == 'Google' %}active{% endif %}">Google</a>
+      <a href="?company=Meta" class="company-filter-btn meta {% if selected_company == 'Meta' %}active{% endif %}">Meta</a>
+      <a href="?company=Amazon" class="company-filter-btn amazon {% if selected_company == 'Amazon' %}active{% endif %}">Amazon</a>
+      <a href="?company=Microsoft" class="company-filter-btn microsoft {% if selected_company == 'Microsoft' %}active{% endif %}">Microsoft</a>
+      <a href="?company=Apple" class="company-filter-btn apple {% if selected_company == 'Apple' %}active{% endif %}">Apple</a>
+      <a href="?company=Netflix" class="company-filter-btn netflix {% if selected_company == 'Netflix' %}active{% endif %}">Netflix</a>
+    </div>
+  </div>
+
+  <!-- Active Filters Display -->
+  {% if selected_difficulty or selected_company or selected_tag %}
+  <div class="d-flex flex-wrap gap-2 mb-3 p-3 bg-light rounded-3">
+    <small class="text-muted me-2"><i class="fas fa-filter me-1"></i>Active filters:</small>
+    {% if selected_difficulty %}
+      <span class="filter-badge difficulty">
+        {{ selected_difficulty }}
+        <a href="?{% if selected_company %}company={{ selected_company }}&{% endif %}{% if selected_tag %}tag={{ selected_tag }}{% endif %}" class="remove-filter">×</a>
+      </span>
+    {% endif %}
+    {% if selected_company %}
+      <span class="filter-badge company">
+        {{ selected_company }}
+        <a href="?{% if selected_difficulty %}difficulty={{ selected_difficulty }}&{% endif %}{% if selected_tag %}tag={{ selected_tag }}{% endif %}" class="remove-filter">×</a>
+      </span>
+    {% endif %}
+    {% if selected_tag %}
+      <span class="filter-badge tag">
+        {{ selected_tag }}
+        <a href="?{% if selected_difficulty %}difficulty={{ selected_difficulty }}&{% endif %}{% if selected_company %}company={{ selected_company }}{% endif %}" class="remove-filter">×</a>
+      </span>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Problems Grid -->
+  <div class="problems-grid">
+    {% for problem in problems %}
+      <div class="problem-card">
+        <a href="{% url 'problem_detail' problem.id %}" class="problem-link">
+          <div class="problem-header">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="problem-title">{{ problem.title }}</h5>
+              <span class="difficulty-badge difficulty-{{ problem.difficulty|lower }}">
+                {{ problem.difficulty }}
+              </span>
+            </div>
+            
+            <div class="company-badge company-{{ problem.company|lower|cut:' ' }}">
+              <i class="fas fa-building me-1"></i>{{ problem.company }}
+            </div>
+          </div>
+          
+          <div class="problem-body">
+            {% if problem.tags %}
+            <div class="tags-container">
+              {% for tag in problem.tags|split:',' %}
+                <span class="tag-badge">{{ tag|trim }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div class="problem-meta">
+              <small class="text-muted">
+                <i class="far fa-clock me-1"></i>{{ problem.created_at|date:"M d, Y" }}
+              </small>
+            </div>
+          </div>
+          
+          <div class="problem-footer">
+            <div class="solve-indicator">
+              <i class="fas fa-arrow-right"></i>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% empty %}
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <h5>No problems found</h5>
+        <p class="text-muted">Try adjusting your filters or explore different categories</p>
+        <button class="btn btn-primary" onclick="clearFilters()">Show All Problems</button>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Enhanced Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content modern-modal">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-sliders-h me-2"></i>Filter Problems</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form method="GET" action="{% url 'problem_list' %}">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label fw-semibold"><i class="fas fa-layer-group me-1"></i>Difficulty</label>
+                <select name="difficulty" class="form-select modern-select">
+                  <option value="">All Difficulties</option>
+                  <option value="Easy" {% if selected_difficulty == 'Easy' %}selected{% endif %}>🟢 Easy</option>
+                  <option value="Medium" {% if selected_difficulty == 'Medium' %}selected{% endif %}>🟡 Medium</option>
+                  <option value="Hard" {% if selected_difficulty == 'Hard' %}selected{% endif %}>🔴 Hard</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label fw-semibold"><i class="fas fa-building me-1"></i>Company</label>
+                <select name="company" class="form-select modern-select">
+                  <option value="">All Companies</option>
+                  {% for company in companies %}
+                    <option value="{{ company }}" {% if selected_company == company %}selected{% endif %}>{{ company }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label fw-semibold"><i class="fas fa-tags me-1"></i>Topic Tags</label>
+                <select name="tag" class="form-select modern-select">
+                  <option value="">All Topics</option>
+                  {% for tag in all_tags %}
+                    <option value="{{ tag }}" {% if selected_tag == tag %}selected{% endif %}>{{ tag }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary flex-grow-1 modern-btn">
+              <i class="fas fa-search me-1"></i>Apply Filters
+            </button>
+            <button type="button" class="btn btn-outline-secondary modern-btn" onclick="clearFilters()">
+              <i class="fas fa-refresh me-1"></i>Reset
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Creative and Modern Styling */
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.problem-icon-container {
+  position: relative;
+}
+
+.pulse-dot {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 12px;
+  height: 12px;
+  background: #10b981;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.modern-btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.modern-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.company-filter-btn {
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.company-filter-btn.google { background: #ea4335; color: white; }
+.company-filter-btn.meta { background: #1877f2; color: white; }
+.company-filter-btn.amazon { background: #ff9900; color: white; }
+.company-filter-btn.microsoft { background: #00a1f1; color: white; }
+.company-filter-btn.apple { background: #000; color: white; }
+.company-filter-btn.netflix { background: #e50914; color: white; }
+
+.company-filter-btn:hover, .company-filter-btn.active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: white !important;
+}
+
+.filter-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.remove-filter {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+.problems-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.problem-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.problem-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+}
+
+.problem-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding: 1.5rem;
+  height: 100%;
+}
+
+.problem-title {
+  color: #2d3748;
+  font-weight: 600;
+  margin-bottom: 0;
+  line-height: 1.4;
+}
+
+.difficulty-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.difficulty-easy { background: #d1fae5; color: #065f46; }
+.difficulty-medium { background: #fef3c7; color: #92400e; }
+.difficulty-hard { background: #fee2e2; color: #991b1b; }
+
+.company-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: #f3f4f6;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag-badge {
+  background: #e0e7ff;
+  color: #3730a3;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.problem-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.solve-indicator {
+  color: #6b7280;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.problem-card:hover .solve-indicator {
+  color: #667eea;
+  transform: translateX(4px);
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.modern-modal {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.modern-select {
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  transition: all 0.2s ease;
+}
+
+.modern-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+@media (max-width: 768px) {
+  .problems-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .company-filter-btn {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+<script>
+function clearFilters() {
+  window.location.href = '{% url "problem_list" %}';
+}
+
+// Add smooth scrolling and animations
+document.addEventListener('DOMContentLoaded', function() {
+  // Animate problem cards on scroll
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.problem-card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(card);
+  });
+});
+</script>
+{% endblock %}

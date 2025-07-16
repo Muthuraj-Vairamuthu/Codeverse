@@ -1,0 +1,1346 @@
+[
+{
+  "model": "problems.problem",
+  "pk": 8,
+  "fields": {
+    "title": "Two Sum",
+    "statement": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+    "input_format": "First line contains n (length of array)\nSecond line contains n space-separated integers\nThird line contains target",
+    "output_format": "Two space-separated integers representing the indices",
+    "sample_input": "4\n2 7 11 15\n9",
+    "sample_output": "0 1",
+    "difficulty": "Easy",
+    "tags": "Array,Hash Table",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.915Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 9,
+  "fields": {
+    "title": "Valid Parentheses",
+    "statement": "Given a string s containing just the characters \"(\", \")\", \"{\", \"}\", \"[\", \"]\", determine if the input string is valid.",
+    "input_format": "A single line containing a string",
+    "output_format": "True if valid, False otherwise",
+    "sample_input": "()[]{}",
+    "sample_output": "True",
+    "difficulty": "Easy",
+    "tags": "Stack,String",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.917Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 10,
+  "fields": {
+    "title": "Merge Two Sorted Lists",
+    "statement": "Merge two sorted linked lists and return it as a sorted list.",
+    "input_format": "First line: space-separated integers for list1\nSecond line: space-separated integers for list2",
+    "output_format": "Space-separated integers representing merged list",
+    "sample_input": "1 2 4\n1 3 4",
+    "sample_output": "1 1 2 3 4 4",
+    "difficulty": "Easy",
+    "tags": "Linked List,Recursion",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.922Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 11,
+  "fields": {
+    "title": "Best Time to Buy and Sell Stock",
+    "statement": "You are given an array prices where prices[i] is the price of a given stock on the ith day. Find the maximum profit you can achieve.",
+    "input_format": "First line: n (number of days)\nSecond line: n space-separated integers (prices)",
+    "output_format": "Maximum profit as an integer",
+    "sample_input": "6\n7 1 5 3 6 4",
+    "sample_output": "5",
+    "difficulty": "Easy",
+    "tags": "Array,Dynamic Programming",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.924Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 12,
+  "fields": {
+    "title": "Valid Palindrome",
+    "statement": "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward.",
+    "input_format": "A single line containing a string",
+    "output_format": "True if palindrome, False otherwise",
+    "sample_input": "A man, a plan, a canal: Panama",
+    "sample_output": "True",
+    "difficulty": "Easy",
+    "tags": "Two Pointers,String",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.925Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 13,
+  "fields": {
+    "title": "Single Number",
+    "statement": "Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.",
+    "input_format": "First line: n\nSecond line: n space-separated integers",
+    "output_format": "The single number",
+    "sample_input": "3\n2 2 1",
+    "sample_output": "1",
+    "difficulty": "Easy",
+    "tags": "Array,Bit Manipulation",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.927Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 14,
+  "fields": {
+    "title": "Linked List Cycle",
+    "statement": "Given head, the head of a linked list, determine if the linked list has a cycle in it.",
+    "input_format": "Space-separated integers representing the linked list (use -1 to indicate cycle position)",
+    "output_format": "True if cycle exists, False otherwise",
+    "sample_input": "3 2 0 -4 1",
+    "sample_output": "True",
+    "difficulty": "Easy",
+    "tags": "Hash Table,Linked List,Two Pointers",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.928Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 15,
+  "fields": {
+    "title": "Climbing Stairs",
+    "statement": "You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?",
+    "input_format": "A single integer n",
+    "output_format": "Number of distinct ways",
+    "sample_input": "2",
+    "sample_output": "2",
+    "difficulty": "Easy",
+    "tags": "Math,Dynamic Programming,Memoization",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.929Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 16,
+  "fields": {
+    "title": "Binary Tree Inorder Traversal",
+    "statement": "Given the root of a binary tree, return the inorder traversal of its nodes values.",
+    "input_format": "Space-separated integers representing level-order tree (null as -1)",
+    "output_format": "Space-separated integers in inorder",
+    "sample_input": "1 -1 2 3",
+    "sample_output": "1 3 2",
+    "difficulty": "Easy",
+    "tags": "Stack,Tree,Depth-First Search,Binary Tree",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.930Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 17,
+  "fields": {
+    "title": "Maximum Subarray",
+    "statement": "Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.",
+    "input_format": "First line: n\nSecond line: n space-separated integers",
+    "output_format": "Maximum sum",
+    "sample_input": "9\n-2 1 -3 4 -1 2 1 -5 4",
+    "sample_output": "6",
+    "difficulty": "Easy",
+    "tags": "Array,Divide and Conquer,Dynamic Programming",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.932Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 18,
+  "fields": {
+    "title": "Add Two Numbers",
+    "statement": "You are given two non-empty linked lists representing two non-negative integers. Add the two numbers and return the sum as a linked list.",
+    "input_format": "First line: digits of first number (reverse order)\nSecond line: digits of second number (reverse order)",
+    "output_format": "Digits of sum in reverse order",
+    "sample_input": "2 4 3\n5 6 4",
+    "sample_output": "7 0 8",
+    "difficulty": "Medium",
+    "tags": "Linked List,Math,Recursion",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.933Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 19,
+  "fields": {
+    "title": "Longest Substring Without Repeating Characters",
+    "statement": "Given a string s, find the length of the longest substring without repeating characters.",
+    "input_format": "A single line containing a string",
+    "output_format": "Length of longest substring",
+    "sample_input": "abcabcbb",
+    "sample_output": "3",
+    "difficulty": "Medium",
+    "tags": "Hash Table,String,Sliding Window",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.934Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 20,
+  "fields": {
+    "title": "Container With Most Water",
+    "statement": "Given n non-negative integers representing an elevation map, find two lines that together with the x-axis forms a container that holds the most water.",
+    "input_format": "First line: n\nSecond line: n space-separated integers",
+    "output_format": "Maximum area",
+    "sample_input": "9\n1 8 6 2 5 4 8 3 7",
+    "sample_output": "49",
+    "difficulty": "Medium",
+    "tags": "Array,Two Pointers,Greedy",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.935Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 21,
+  "fields": {
+    "title": "3Sum",
+    "statement": "Given an integer array nums, return all the triplets such that nums[i] + nums[j] + nums[k] == 0.",
+    "input_format": "First line: n\nSecond line: n space-separated integers",
+    "output_format": "Each line contains a triplet (sorted order)",
+    "sample_input": "6\n-1 0 1 2 -1 -4",
+    "sample_output": "-1 -1 2\n-1 0 1",
+    "difficulty": "Medium",
+    "tags": "Array,Two Pointers,Sorting",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.937Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 22,
+  "fields": {
+    "title": "Group Anagrams",
+    "statement": "Given an array of strings strs, group the anagrams together.",
+    "input_format": "First line: n\nNext n lines: strings",
+    "output_format": "Each line contains grouped anagrams",
+    "sample_input": "6\neat\ntea\ntan\nate\nnat\nbat",
+    "sample_output": "bat\neat tea ate\ntan nat",
+    "difficulty": "Medium",
+    "tags": "Array,Hash Table,String,Sorting",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.939Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 23,
+  "fields": {
+    "title": "Product of Array Except Self",
+    "statement": "Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].",
+    "input_format": "First line: n\nSecond line: n space-separated integers",
+    "output_format": "n space-separated integers",
+    "sample_input": "4\n1 2 3 4",
+    "sample_output": "24 12 8 6",
+    "difficulty": "Medium",
+    "tags": "Array,Prefix Sum",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.941Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 24,
+  "fields": {
+    "title": "Valid Sudoku",
+    "statement": "Determine if a 9 x 9 Sudoku board is valid.",
+    "input_format": "9 lines, each containing 9 characters (use . for empty cells)",
+    "output_format": "True if valid, False otherwise",
+    "sample_input": "53..7....\n6..195...\n.98....6.\n8...6...3\n4..8.3..1\n7...2...6\n.6....28.\n...419..5\n....8..79",
+    "sample_output": "True",
+    "difficulty": "Medium",
+    "tags": "Array,Hash Table,Matrix",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.942Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 25,
+  "fields": {
+    "title": "Search in Rotated Sorted Array",
+    "statement": "Given the array nums after the rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.",
+    "input_format": "First line: n and target\nSecond line: n space-separated integers",
+    "output_format": "Index of target or -1",
+    "sample_input": "7 0\n4 5 6 7 0 1 2",
+    "sample_output": "4",
+    "difficulty": "Medium",
+    "tags": "Array,Binary Search",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.943Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 26,
+  "fields": {
+    "title": "Combination Sum",
+    "statement": "Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target.",
+    "input_format": "First line: n and target\nSecond line: n space-separated integers",
+    "output_format": "Each line contains a combination",
+    "sample_input": "4 7\n2 3 6 7",
+    "sample_output": "2 2 3\n7",
+    "difficulty": "Medium",
+    "tags": "Array,Backtracking",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.944Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 27,
+  "fields": {
+    "title": "Permutations",
+    "statement": "Given an array nums of distinct integers, return all the possible permutations.",
+    "input_format": "First line: n\nSecond line: n space-separated integers",
+    "output_format": "Each line contains a permutation",
+    "sample_input": "3\n1 2 3",
+    "sample_output": "1 2 3\n1 3 2\n2 1 3\n2 3 1\n3 1 2\n3 2 1",
+    "difficulty": "Medium",
+    "tags": "Array,Backtracking",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.946Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 28,
+  "fields": {
+    "title": "Rotate Image",
+    "statement": "You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).",
+    "input_format": "First line: n\nNext n lines: n space-separated integers each",
+    "output_format": "n lines of n space-separated integers each",
+    "sample_input": "3\n1 2 3\n4 5 6\n7 8 9",
+    "sample_output": "7 4 1\n8 5 2\n9 6 3",
+    "difficulty": "Medium",
+    "tags": "Array,Math,Matrix",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.947Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 29,
+  "fields": {
+    "title": "Spiral Matrix",
+    "statement": "Given an m x n matrix, return all elements of the matrix in spiral order.",
+    "input_format": "First line: m n\nNext m lines: n space-separated integers each",
+    "output_format": "Space-separated integers in spiral order",
+    "sample_input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+    "sample_output": "1 2 3 6 9 8 7 4 5",
+    "difficulty": "Medium",
+    "tags": "Array,Matrix,Simulation",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.949Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 30,
+  "fields": {
+    "title": "Jump Game",
+    "statement": "You are given an integer array nums. You are initially positioned at the first index, and each element represents your maximum jump length. Return true if you can reach the last index.",
+    "input_format": "First line: n\nSecond line: n space-separated integers",
+    "output_format": "True if reachable, False otherwise",
+    "sample_input": "5\n2 3 1 1 4",
+    "sample_output": "True",
+    "difficulty": "Medium",
+    "tags": "Array,Dynamic Programming,Greedy",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.950Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 31,
+  "fields": {
+    "title": "Merge Intervals",
+    "statement": "Given an array of intervals, merge all overlapping intervals.",
+    "input_format": "First line: n\nNext n lines: start end",
+    "output_format": "Each line contains merged interval",
+    "sample_input": "4\n1 3\n2 6\n8 10\n15 18",
+    "sample_output": "1 6\n8 10\n15 18",
+    "difficulty": "Medium",
+    "tags": "Array,Sorting",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.951Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 32,
+  "fields": {
+    "title": "Insert Interval",
+    "statement": "You are given an array of non-overlapping intervals and a new interval. Insert the new interval and merge if necessary.",
+    "input_format": "First line: n\nNext n lines: start end\nLast line: newStart newEnd",
+    "output_format": "Each line contains resulting interval",
+    "sample_input": "3\n1 3\n6 9\n2 5",
+    "sample_output": "1 5\n6 9",
+    "difficulty": "Medium",
+    "tags": "Array",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.953Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 33,
+  "fields": {
+    "title": "Unique Paths",
+    "statement": "A robot is located at the top-left corner of a m x n grid. How many possible unique paths are there?",
+    "input_format": "Two integers m and n",
+    "output_format": "Number of unique paths",
+    "sample_input": "3 7",
+    "sample_output": "28",
+    "difficulty": "Medium",
+    "tags": "Math,Dynamic Programming,Combinatorics",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.954Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 34,
+  "fields": {
+    "title": "Minimum Path Sum",
+    "statement": "Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right with minimum sum.",
+    "input_format": "First line: m n\nNext m lines: n space-separated integers each",
+    "output_format": "Minimum sum",
+    "sample_input": "3 3\n1 3 1\n1 5 1\n4 2 1",
+    "sample_output": "7",
+    "difficulty": "Medium",
+    "tags": "Array,Dynamic Programming,Matrix",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.956Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 35,
+  "fields": {
+    "title": "Set Matrix Zeroes",
+    "statement": "Given an m x n integer matrix, if an element is 0, set its entire row and column to 0s.",
+    "input_format": "First line: m n\nNext m lines: n space-separated integers each",
+    "output_format": "m lines of n space-separated integers each",
+    "sample_input": "3 3\n1 1 1\n1 0 1\n1 1 1",
+    "sample_output": "1 0 1\n0 0 0\n1 0 1",
+    "difficulty": "Medium",
+    "tags": "Array,Hash Table,Matrix",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.957Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 36,
+  "fields": {
+    "title": "Search a 2D Matrix",
+    "statement": "Write an efficient algorithm that searches for a value in an m x n matrix.",
+    "input_format": "First line: m n target\nNext m lines: n space-separated integers each",
+    "output_format": "True if found, False otherwise",
+    "sample_input": "3 4 3\n1 4 7 11\n2 5 8 12\n3 6 9 16",
+    "sample_output": "True",
+    "difficulty": "Medium",
+    "tags": "Array,Binary Search,Matrix",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.959Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 37,
+  "fields": {
+    "title": "Sort Colors",
+    "statement": "Given an array with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent.",
+    "input_format": "First line: n\nSecond line: n space-separated integers (0=red, 1=white, 2=blue)",
+    "output_format": "n space-separated sorted integers",
+    "sample_input": "6\n2 0 2 1 1 0",
+    "sample_output": "0 0 1 1 2 2",
+    "difficulty": "Medium",
+    "tags": "Array,Two Pointers,Sorting",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.960Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 38,
+  "fields": {
+    "title": "Median of Two Sorted Arrays",
+    "statement": "Given two sorted arrays nums1 and nums2, return the median of the two sorted arrays.",
+    "input_format": "First line: n1 n2\nSecond line: n1 space-separated integers\nThird line: n2 space-separated integers",
+    "output_format": "The median as a float",
+    "sample_input": "2 1\n1 3\n2",
+    "sample_output": "2.0",
+    "difficulty": "Hard",
+    "tags": "Array,Binary Search,Divide and Conquer",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.961Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 39,
+  "fields": {
+    "title": "Merge k Sorted Lists",
+    "statement": "You are given an array of k linked-lists, each sorted in ascending order. Merge all the linked-lists into one sorted linked-list.",
+    "input_format": "First line: k\nNext k lines: space-separated integers for each list",
+    "output_format": "Space-separated integers representing merged list",
+    "sample_input": "3\n1 4 5\n1 3 4\n2 6",
+    "sample_output": "1 1 2 3 4 4 5 6",
+    "difficulty": "Hard",
+    "tags": "Linked List,Divide and Conquer,Heap,Merge Sort",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.963Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 40,
+  "fields": {
+    "title": "Trapping Rain Water",
+    "statement": "Given n non-negative integers representing an elevation map, compute how much water it can trap after raining.",
+    "input_format": "First line: n\nSecond line: n space-separated integers",
+    "output_format": "Amount of trapped water",
+    "sample_input": "12\n0 1 0 2 1 0 1 3 2 1 2 1",
+    "sample_output": "6",
+    "difficulty": "Hard",
+    "tags": "Array,Two Pointers,Dynamic Programming,Stack,Monotonic Stack",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.964Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 41,
+  "fields": {
+    "title": "Regular Expression Matching",
+    "statement": "Given an input string s and a pattern p, implement regular expression matching with support for \".\" and \"*\".",
+    "input_format": "First line: string s\nSecond line: pattern p",
+    "output_format": "True if matches, False otherwise",
+    "sample_input": "aa\na*",
+    "sample_output": "True",
+    "difficulty": "Hard",
+    "tags": "String,Dynamic Programming,Recursion",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.966Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 42,
+  "fields": {
+    "title": "Wildcard Matching",
+    "statement": "Given an input string s and a pattern p, implement wildcard pattern matching with support for \"?\" and \"*\".",
+    "input_format": "First line: string s\nSecond line: pattern p",
+    "output_format": "True if matches, False otherwise",
+    "sample_input": "aa\n*",
+    "sample_output": "True",
+    "difficulty": "Hard",
+    "tags": "String,Dynamic Programming,Greedy,Recursion",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.967Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 43,
+  "fields": {
+    "title": "Jump Game II",
+    "statement": "Given an array of non-negative integers nums, find the minimum number of jumps to reach the last index.",
+    "input_format": "First line: n\nSecond line: n space-separated integers",
+    "output_format": "Minimum number of jumps",
+    "sample_input": "5\n2 3 1 1 4",
+    "sample_output": "2",
+    "difficulty": "Hard",
+    "tags": "Array,Dynamic Programming,Greedy",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.968Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 44,
+  "fields": {
+    "title": "First Missing Positive",
+    "statement": "Given an unsorted integer array nums, return the smallest missing positive integer.",
+    "input_format": "First line: n\nSecond line: n space-separated integers",
+    "output_format": "Smallest missing positive integer",
+    "sample_input": "3\n1 2 0",
+    "sample_output": "3",
+    "difficulty": "Hard",
+    "tags": "Array,Hash Table",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.970Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 45,
+  "fields": {
+    "title": "Largest Rectangle in Histogram",
+    "statement": "Given an array of integers heights representing the histogram bar heights, find the area of the largest rectangle.",
+    "input_format": "First line: n\nSecond line: n space-separated integers",
+    "output_format": "Largest rectangle area",
+    "sample_input": "6\n2 1 5 6 2 3",
+    "sample_output": "10",
+    "difficulty": "Hard",
+    "tags": "Array,Stack,Monotonic Stack",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.974Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 46,
+  "fields": {
+    "title": "Maximal Rectangle",
+    "statement": "Given a binary matrix filled with 0s and 1s, find the largest rectangle containing only 1s.",
+    "input_format": "First line: m n\nNext m lines: n characters each (0 or 1)",
+    "output_format": "Area of largest rectangle",
+    "sample_input": "4 5\n10100\n10111\n11111\n10010",
+    "sample_output": "6",
+    "difficulty": "Hard",
+    "tags": "Array,Dynamic Programming,Stack,Matrix,Monotonic Stack",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.977Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 47,
+  "fields": {
+    "title": "Edit Distance",
+    "statement": "Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2.",
+    "input_format": "First line: word1\nSecond line: word2",
+    "output_format": "Minimum edit distance",
+    "sample_input": "horse\nros",
+    "sample_output": "3",
+    "difficulty": "Hard",
+    "tags": "String,Dynamic Programming",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.979Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 48,
+  "fields": {
+    "title": "Word Ladder",
+    "statement": "Given two words, beginWord and endWord, and a dictionary wordList, return the length of shortest transformation sequence.",
+    "input_format": "First line: beginWord\nSecond line: endWord\nNext lines: words in dictionary (end with empty line)",
+    "output_format": "Length of shortest sequence or 0",
+    "sample_input": "hit\ncog\nhot\ndot\ndog\nlot\nlog\ncog\n",
+    "sample_output": "5",
+    "difficulty": "Hard",
+    "tags": "Hash Table,String,Breadth-First Search",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.981Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 49,
+  "fields": {
+    "title": "Word Break II",
+    "statement": "Given a string s and a dictionary of strings wordDict, add spaces to s to construct sentences where each word is in wordDict.",
+    "input_format": "First line: string s\nNext lines: dictionary words (end with empty line)",
+    "output_format": "Each line contains a valid sentence",
+    "sample_input": "catsanddog\ncat\ncats\nand\nsand\ndog\n",
+    "sample_output": "cats and dog\ncat sand dog",
+    "difficulty": "Hard",
+    "tags": "Array,Hash Table,String,Dynamic Programming,Backtracking",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.982Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 50,
+  "fields": {
+    "title": "Palindrome Checker",
+    "statement": "Check if a given string is a palindrome (case-insensitive, ignore spaces and punctuation).",
+    "input_format": "A single line containing a string",
+    "output_format": "True if palindrome, False otherwise",
+    "sample_input": "racecar",
+    "sample_output": "True",
+    "difficulty": "Easy",
+    "tags": "String,Two Pointers",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.984Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 51,
+  "fields": {
+    "title": "Binary Search",
+    "statement": "Given a sorted array and a target value, return the index of the target or -1 if not found.",
+    "input_format": "First line: n target\nSecond line: n space-separated sorted integers",
+    "output_format": "Index of target or -1",
+    "sample_input": "6 4\n1 2 3 4 5 6",
+    "sample_output": "3",
+    "difficulty": "Easy",
+    "tags": "Array,Binary Search",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.985Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 52,
+  "fields": {
+    "title": "Fibonacci Number",
+    "statement": "Calculate the nth Fibonacci number where F(0) = 0, F(1) = 1.",
+    "input_format": "A single integer n",
+    "output_format": "The nth Fibonacci number",
+    "sample_input": "4",
+    "sample_output": "3",
+    "difficulty": "Easy",
+    "tags": "Math,Dynamic Programming,Recursion,Memoization",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.990Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 53,
+  "fields": {
+    "title": "Reverse Integer",
+    "statement": "Given a signed 32-bit integer x, return x with its digits reversed.",
+    "input_format": "A single integer",
+    "output_format": "Reversed integer (return 0 if overflow)",
+    "sample_input": "123",
+    "sample_output": "321",
+    "difficulty": "Easy",
+    "tags": "Math",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.991Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 54,
+  "fields": {
+    "title": "Roman to Integer",
+    "statement": "Given a roman numeral, convert it to an integer.",
+    "input_format": "A string representing a roman numeral",
+    "output_format": "Integer value",
+    "sample_input": "III",
+    "sample_output": "3",
+    "difficulty": "Easy",
+    "tags": "Hash Table,Math,String",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.992Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 55,
+  "fields": {
+    "title": "Longest Common Prefix",
+    "statement": "Write a function to find the longest common prefix string amongst an array of strings.",
+    "input_format": "First line: n\nNext n lines: strings",
+    "output_format": "Longest common prefix",
+    "sample_input": "3\nflower\nflow\nflight",
+    "sample_output": "fl",
+    "difficulty": "Easy",
+    "tags": "String",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.994Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 56,
+  "fields": {
+    "title": "Remove Duplicates from Sorted Array",
+    "statement": "Given an integer array nums sorted in non-decreasing order, remove duplicates in-place.",
+    "input_format": "First line: n\nSecond line: n space-separated sorted integers",
+    "output_format": "Number of unique elements",
+    "sample_input": "3\n1 1 2",
+    "sample_output": "2",
+    "difficulty": "Easy",
+    "tags": "Array,Two Pointers",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.995Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 57,
+  "fields": {
+    "title": "Implement strStr",
+    "statement": "Return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.",
+    "input_format": "First line: haystack\nSecond line: needle",
+    "output_format": "Index of first occurrence or -1",
+    "sample_input": "hello\nll",
+    "sample_output": "2",
+    "difficulty": "Easy",
+    "tags": "Two Pointers,String,String Matching",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.997Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 58,
+  "fields": {
+    "title": "Search Insert Position",
+    "statement": "Given a sorted array and a target value, return the index where target would be inserted.",
+    "input_format": "First line: n target\nSecond line: n space-separated sorted integers",
+    "output_format": "Insert position index",
+    "sample_input": "4 5\n1 3 5 6",
+    "sample_output": "2",
+    "difficulty": "Easy",
+    "tags": "Array,Binary Search",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:14.999Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 59,
+  "fields": {
+    "title": "Length of Last Word",
+    "statement": "Given a string s consisting of words and spaces, return the length of the last word.",
+    "input_format": "A string s",
+    "output_format": "Length of last word",
+    "sample_input": "Hello World",
+    "sample_output": "5",
+    "difficulty": "Easy",
+    "tags": "String",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:15.000Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 60,
+  "fields": {
+    "title": "Plus One",
+    "statement": "Given a non-empty array of decimal digits representing a non-negative integer, increment one to the integer.",
+    "input_format": "First line: n\nSecond line: n space-separated digits",
+    "output_format": "n space-separated digits after increment",
+    "sample_input": "3\n1 2 3",
+    "sample_output": "1 2 4",
+    "difficulty": "Easy",
+    "tags": "Array,Math",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:15.002Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 61,
+  "fields": {
+    "title": "Sqrt(x)",
+    "statement": "Given a non-negative integer x, compute and return the square root of x.",
+    "input_format": "A non-negative integer x",
+    "output_format": "Integer square root",
+    "sample_input": "4",
+    "sample_output": "2",
+    "difficulty": "Easy",
+    "tags": "Math,Binary Search",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:15.004Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 62,
+  "fields": {
+    "title": "Symmetric Tree",
+    "statement": "Given the root of a binary tree, check whether it is a mirror of itself.",
+    "input_format": "Space-separated integers representing level-order tree (null as -1)",
+    "output_format": "True if symmetric, False otherwise",
+    "sample_input": "1 2 2 3 4 4 3",
+    "sample_output": "True",
+    "difficulty": "Easy",
+    "tags": "Tree,Depth-First Search,Breadth-First Search,Binary Tree",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:15.005Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 63,
+  "fields": {
+    "title": "Maximum Depth of Binary Tree",
+    "statement": "Given the root of a binary tree, return its maximum depth.",
+    "input_format": "Space-separated integers representing level-order tree (null as -1)",
+    "output_format": "Maximum depth",
+    "sample_input": "3 9 20 -1 -1 15 7",
+    "sample_output": "3",
+    "difficulty": "Easy",
+    "tags": "Tree,Depth-First Search,Breadth-First Search,Binary Tree",
+    "company": "Other",
+    "created_at": "2025-06-10T14:15:15.007Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 64,
+  "fields": {
+    "title": "Add Binary",
+    "statement": "Given two binary strings a and b, return their sum as a binary string.",
+    "input_format": "Two lines containing binary strings a and b.",
+    "output_format": "Binary string representing the sum.",
+    "sample_input": "11\n1",
+    "sample_output": "100",
+    "difficulty": "Easy",
+    "tags": "Math, String, Bit Manipulation",
+    "company": "Meta",
+    "created_at": "2025-06-10T14:22:41.914Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 65,
+  "fields": {
+    "title": "Binary Tree Maximum Path Sum",
+    "statement": "A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. Find the maximum sum of any non-empty path.",
+    "input_format": "Binary tree representation.",
+    "output_format": "Maximum path sum.",
+    "sample_input": "1 2 3",
+    "sample_output": "6",
+    "difficulty": "Hard",
+    "tags": "Dynamic Programming, Tree, Depth-First Search",
+    "company": "Meta",
+    "created_at": "2025-06-10T14:22:41.916Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 66,
+  "fields": {
+    "title": "Number of Islands",
+    "statement": "Given an m x n 2D binary grid which represents a map of \"1\"s (land) and \"0\"s (water), return the number of islands.",
+    "input_format": "First line m n, followed by m lines of grid.",
+    "output_format": "Number of islands.",
+    "sample_input": "4 5\n11110\n11010\n11000\n00000",
+    "sample_output": "1",
+    "difficulty": "Medium",
+    "tags": "Array, Depth-First Search, Breadth-First Search, Union Find, Matrix",
+    "company": "Amazon",
+    "created_at": "2025-06-10T14:22:41.917Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 67,
+  "fields": {
+    "title": "Serialize and Deserialize Binary Tree",
+    "statement": "Design an algorithm to serialize and deserialize a binary tree.",
+    "input_format": "Binary tree representation.",
+    "output_format": "Serialized string.",
+    "sample_input": "1 2 3 null null 4 5",
+    "sample_output": "1,2,3,null,null,4,5",
+    "difficulty": "Hard",
+    "tags": "String, Tree, Depth-First Search, Breadth-First Search, Design, Binary Tree",
+    "company": "Microsoft",
+    "created_at": "2025-06-10T14:22:41.919Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 68,
+  "fields": {
+    "title": "Generate Parentheses",
+    "statement": "Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.",
+    "input_format": "A single integer n.",
+    "output_format": "All valid combinations, one per line.",
+    "sample_input": "3",
+    "sample_output": "((()))\n(()())\n(())()\n()(())\n()()()",
+    "difficulty": "Medium",
+    "tags": "String, Dynamic Programming, Backtracking",
+    "company": "Apple",
+    "created_at": "2025-06-10T14:22:41.920Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 69,
+  "fields": {
+    "title": "Find First and Last Position of Element in Sorted Array",
+    "statement": "Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.",
+    "input_format": "First line n and target, second line n numbers.",
+    "output_format": "Start and end positions.",
+    "sample_input": "6 8\n5 7 7 8 8 10",
+    "sample_output": "3 4",
+    "difficulty": "Medium",
+    "tags": "Array, Binary Search",
+    "company": "Tesla",
+    "created_at": "2025-06-10T14:22:41.923Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 70,
+  "fields": {
+    "title": "Minimum Window Substring",
+    "statement": "Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window.",
+    "input_format": "Two lines: string s and string t.",
+    "output_format": "Minimum window substring.",
+    "sample_input": "ADOBECODEBANC\nABC",
+    "sample_output": "BANC",
+    "difficulty": "Hard",
+    "tags": "Hash Table, String, Sliding Window",
+    "company": "Tesla",
+    "created_at": "2025-06-10T14:22:41.924Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 71,
+  "fields": {
+    "title": "House Robber",
+    "statement": "You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed. Adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night.",
+    "input_format": "First line n, second line n amounts.",
+    "output_format": "Maximum amount that can be robbed.",
+    "sample_input": "4\n1 2 3 1",
+    "sample_output": "4",
+    "difficulty": "Medium",
+    "tags": "Array, Dynamic Programming",
+    "company": "ByteDance",
+    "created_at": "2025-06-10T14:23:58.300Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 72,
+  "fields": {
+    "title": "Course Schedule",
+    "statement": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.",
+    "input_format": "First line numCourses, second line prerequisites.",
+    "output_format": "True if possible to finish all courses.",
+    "sample_input": "2\n[[1,0]]",
+    "sample_output": "True",
+    "difficulty": "Medium",
+    "tags": "Depth-First Search, Breadth-First Search, Graph, Topological Sort",
+    "company": "ByteDance",
+    "created_at": "2025-06-10T14:23:58.302Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 73,
+  "fields": {
+    "title": "Word Break",
+    "statement": "Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.",
+    "input_format": "String s and list of dictionary words.",
+    "output_format": "True if can be segmented.",
+    "sample_input": "leetcode\nleet code",
+    "sample_output": "True",
+    "difficulty": "Medium",
+    "tags": "Array, Hash Table, String, Dynamic Programming, Trie, Memoization",
+    "company": "ByteDance",
+    "created_at": "2025-06-10T14:23:58.303Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 74,
+  "fields": {
+    "title": "Coin Change",
+    "statement": "You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money. Return the fewest number of coins that you need to make up that amount.",
+    "input_format": "First line: coins array, second line: amount.",
+    "output_format": "Minimum coins needed.",
+    "sample_input": "1 3 4\n6",
+    "sample_output": "2",
+    "difficulty": "Medium",
+    "tags": "Array, Dynamic Programming, Breadth-First Search",
+    "company": "Goldman Sachs",
+    "created_at": "2025-06-10T14:23:58.304Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 75,
+  "fields": {
+    "title": "Longest Increasing Subsequence",
+    "statement": "Given an integer array nums, return the length of the longest strictly increasing subsequence.",
+    "input_format": "First line n, second line n numbers.",
+    "output_format": "Length of LIS.",
+    "sample_input": "8\n10 9 2 5 3 7 101 18",
+    "sample_output": "4",
+    "difficulty": "Medium",
+    "tags": "Array, Binary Search, Dynamic Programming",
+    "company": "Goldman Sachs",
+    "created_at": "2025-06-10T14:23:58.305Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 76,
+  "fields": {
+    "title": "Implement strStr()",
+    "statement": "Return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.",
+    "input_format": "Two lines: haystack and needle.",
+    "output_format": "Index or -1.",
+    "sample_input": "hello\nll",
+    "sample_output": "2",
+    "difficulty": "Easy",
+    "tags": "Two Pointers, String, String Matching",
+    "company": "Other",
+    "created_at": "2025-06-10T14:23:58.307Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 77,
+  "fields": {
+    "title": "Subsets",
+    "statement": "Given an integer array nums of unique elements, return all possible subsets (the power set).",
+    "input_format": "First line n, second line n unique numbers.",
+    "output_format": "All subsets.",
+    "sample_input": "3\n1 2 3",
+    "sample_output": "[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]",
+    "difficulty": "Medium",
+    "tags": "Array, Backtracking, Bit Manipulation",
+    "company": "Other",
+    "created_at": "2025-06-10T14:23:58.310Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 78,
+  "fields": {
+    "title": "Word Search",
+    "statement": "Given an m x n grid of characters board and a string word, return true if word exists in the grid.",
+    "input_format": "First line m n, then m lines of board, then word.",
+    "output_format": "True if word exists.",
+    "sample_input": "3 4\nABCE\nSFCS\nADEE\nABCCED",
+    "sample_output": "True",
+    "difficulty": "Medium",
+    "tags": "Array, Backtracking, Matrix",
+    "company": "Other",
+    "created_at": "2025-06-10T14:23:58.311Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 79,
+  "fields": {
+    "title": "Remove Nth Node From End of List",
+    "statement": "Given the head of a linked list, remove the nth node from the end of the list and return its head.",
+    "input_format": "Array representation of linked list and n.",
+    "output_format": "Modified linked list.",
+    "sample_input": "1 2 3 4 5\n2",
+    "sample_output": "1 2 3 5",
+    "difficulty": "Medium",
+    "tags": "Linked List, Two Pointers",
+    "company": "Google",
+    "created_at": "2025-06-10T14:25:16.054Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 80,
+  "fields": {
+    "title": "Letter Combinations of a Phone Number",
+    "statement": "Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.",
+    "input_format": "String of digits.",
+    "output_format": "All letter combinations.",
+    "sample_input": "23",
+    "sample_output": "[\"ad\",\"ae\",\"af\",\"bd\",\"be\",\"bf\",\"cd\",\"ce\",\"cf\"]",
+    "difficulty": "Medium",
+    "tags": "Hash Table, String, Backtracking",
+    "company": "Meta",
+    "created_at": "2025-06-10T14:25:16.055Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 81,
+  "fields": {
+    "title": "Valid Anagram",
+    "statement": "Given two strings s and t, return true if t is an anagram of s, and false otherwise.",
+    "input_format": "Two strings s and t.",
+    "output_format": "True if anagram, False otherwise.",
+    "sample_input": "anagram\nnagaram",
+    "sample_output": "True",
+    "difficulty": "Easy",
+    "tags": "Hash Table, String, Sorting",
+    "company": "Amazon",
+    "created_at": "2025-06-10T14:25:16.056Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 82,
+  "fields": {
+    "title": "Missing Number",
+    "statement": "Given an array nums containing n distinct numbers in the range [0, n], return the only number in the range that is missing from the array.",
+    "input_format": "First line n, second line n-1 numbers.",
+    "output_format": "Missing number.",
+    "sample_input": "3\n3 0 1",
+    "sample_output": "2",
+    "difficulty": "Easy",
+    "tags": "Array, Hash Table, Math, Binary Search, Bit Manipulation, Sorting",
+    "company": "Microsoft",
+    "created_at": "2025-06-10T14:25:16.057Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 83,
+  "fields": {
+    "title": "Happy Number",
+    "statement": "Write an algorithm to determine if a number n is happy. A happy number is a number defined by the following process: Starting with any positive integer, replace the number by the sum of the squares of its digits.",
+    "input_format": "A positive integer n.",
+    "output_format": "True if happy number.",
+    "sample_input": "19",
+    "sample_output": "True",
+    "difficulty": "Easy",
+    "tags": "Hash Table, Math, Two Pointers",
+    "company": "Tesla",
+    "created_at": "2025-06-10T14:25:16.059Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 84,
+  "fields": {
+    "title": "Count Primes",
+    "statement": "Given an integer n, return the number of prime numbers that are less than n.",
+    "input_format": "A positive integer n.",
+    "output_format": "Number of primes less than n.",
+    "sample_input": "10",
+    "sample_output": "4",
+    "difficulty": "Medium",
+    "tags": "Array, Math, Enumeration, Number Theory",
+    "company": "Uber",
+    "created_at": "2025-06-10T14:25:16.061Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 85,
+  "fields": {
+    "title": "Isomorphic Strings",
+    "statement": "Given two strings s and t, determine if they are isomorphic. Two strings s and t are isomorphic if the characters in s can be replaced to get t.",
+    "input_format": "Two strings s and t.",
+    "output_format": "True if isomorphic.",
+    "sample_input": "egg\nadd",
+    "sample_output": "True",
+    "difficulty": "Easy",
+    "tags": "Hash Table, String",
+    "company": "LinkedIn",
+    "created_at": "2025-06-10T14:25:16.062Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 86,
+  "fields": {
+    "title": "Contains Duplicate",
+    "statement": "Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.",
+    "input_format": "First line n, second line n numbers.",
+    "output_format": "True if contains duplicate.",
+    "sample_input": "4\n1 2 3 1",
+    "sample_output": "True",
+    "difficulty": "Easy",
+    "tags": "Array, Hash Table, Sorting",
+    "company": "Twitter",
+    "created_at": "2025-06-10T14:25:16.063Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 87,
+  "fields": {
+    "title": "Reverse Bits",
+    "statement": "Reverse bits of a given 32 bits unsigned integer.",
+    "input_format": "A 32-bit unsigned integer.",
+    "output_format": "Reversed bits as integer.",
+    "sample_input": "43261596",
+    "sample_output": "964176192",
+    "difficulty": "Easy",
+    "tags": "Divide and Conquer, Bit Manipulation",
+    "company": "Spotify",
+    "created_at": "2025-06-10T14:25:16.064Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 88,
+  "fields": {
+    "title": "Number of 1 Bits",
+    "statement": "Write a function that takes an unsigned integer and returns the number of \"1\" bits it has.",
+    "input_format": "A 32-bit unsigned integer.",
+    "output_format": "Number of 1 bits.",
+    "sample_input": "11",
+    "sample_output": "3",
+    "difficulty": "Easy",
+    "tags": "Divide and Conquer, Bit Manipulation",
+    "company": "Airbnb",
+    "created_at": "2025-06-10T14:25:16.065Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 89,
+  "fields": {
+    "title": "Power of Two",
+    "statement": "Given an integer n, return true if it is a power of two. Otherwise, return false.",
+    "input_format": "An integer n.",
+    "output_format": "True if power of two.",
+    "sample_input": "16",
+    "sample_output": "True",
+    "difficulty": "Easy",
+    "tags": "Math, Bit Manipulation, Recursion",
+    "company": "ByteDance",
+    "created_at": "2025-06-10T14:25:16.066Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 90,
+  "fields": {
+    "title": "Palindrome Linked List",
+    "statement": "Given the head of a singly linked list, return true if it is a palindrome.",
+    "input_format": "Array representation of linked list.",
+    "output_format": "True if palindrome.",
+    "sample_input": "1 2 2 1",
+    "sample_output": "True",
+    "difficulty": "Easy",
+    "tags": "Linked List, Two Pointers, Stack, Recursion",
+    "company": "Goldman Sachs",
+    "created_at": "2025-06-10T14:25:16.067Z"
+  }
+},
+{
+  "model": "problems.problem",
+  "pk": 91,
+  "fields": {
+    "title": "Move Zeroes",
+    "statement": "Given an integer array nums, move all 0s to the end of it while maintaining the relative order of the non-zero elements.",
+    "input_format": "First line n, second line n numbers.",
+    "output_format": "Array with zeros moved to end.",
+    "sample_input": "5\n0 1 0 3 12",
+    "sample_output": "1 3 12 0 0",
+    "difficulty": "Easy",
+    "tags": "Array, Two Pointers",
+    "company": "JPMorgan",
+    "created_at": "2025-06-10T14:25:16.068Z"
+  }
+}
+]

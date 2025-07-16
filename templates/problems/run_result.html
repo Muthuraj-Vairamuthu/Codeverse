@@ -1,0 +1,311 @@
+<!-- Results content for modal -->
+<style>
+  .results-container {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .result-summary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .summary-item {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .summary-number {
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: block;
+  }
+  
+  .summary-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+  
+  .code-preview {
+    background: #1a1b23;
+    color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .test-cases-grid {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  .test-case-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+  
+  .test-case-card.passed {
+    border-left: 4px solid #10b981;
+  }
+  
+  .test-case-card.failed {
+    border-left: 4px solid #ef4444;
+  }
+  
+  .test-case-header {
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: between;
+    align-items: center;
+  }
+  
+  .test-case-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .status-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+  
+  .status-passed {
+    background: #10b981;
+    color: white;
+  }
+  
+  .status-failed {
+    background: #ef4444;
+    color: white;
+  }
+  
+  .test-case-content {
+    padding: 1.5rem;
+  }
+  
+  .io-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+  
+  .io-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  
+  .io-section.output-mismatch {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+  }
+  
+  .io-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .io-content {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+    background: white;
+    padding: 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    min-height: 60px;
+  }
+  
+  .submission-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .badge-accepted {
+    background: #d1fae5;
+    color: #065f46;
+  }
+  
+  .badge-wrong {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+  
+  .verdict-section {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+  }
+  
+  .verdict-accepted {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+  }
+  
+  .verdict-wrong {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+  }
+</style>
+
+<div class="results-container">
+  <!-- Summary Section -->
+  <div class="result-summary">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h4 class="mb-0">
+          {% if is_submission %}
+            <i class="fas fa-paper-plane me-2"></i>
+            Official Submission
+          {% else %}
+            <i class="fas fa-play me-2"></i>
+            Test Run
+          {% endif %}
+        </h4>
+        <p class="mb-0 opacity-75">{{ problem.title }} • {{ language|title }}</p>
+      </div>
+      {% if is_submission %}
+        <div class="submission-badge {% if all_passed %}badge-accepted{% else %}badge-wrong{% endif %}">
+          <i class="fas fa-{% if all_passed %}check{% else %}times{% endif %}"></i>
+          {{ submission.verdict }}
+        </div>
+      {% endif %}
+    </div>
+    
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span class="summary-number">{{ results|length }}</span>
+        <span class="summary-label">Total Tests</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-number">
+          {% for result in results %}{% if result.passed %}{% if forloop.first %}1{% else %}{{ forloop.counter }}{% endif %}{% endif %}{% empty %}0{% endfor %}
+        </span>
+        <span class="summary-label">Passed</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-number">
+          {% for result in results %}{% if not result.passed %}{% if forloop.first %}1{% else %}{{ forloop.counter }}{% endif %}{% endif %}{% empty %}0{% endfor %}
+        </span>
+        <span class="summary-label">Failed</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-number">
+          {% widthratio results|length results|length 100 %}%
+          {% comment %} This is a simplified calculation {% endcomment %}
+        </span>
+        <span class="summary-label">Success Rate</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Preview -->
+  <h5 class="mb-3">
+    <i class="fas fa-code me-2"></i>
+    Your Code ({{ language|title }})
+  </h5>
+  <div class="code-preview">{{ code }}</div>
+
+  <!-- Test Cases -->
+  <h5 class="mb-3">
+    <i class="fas fa-list-check me-2"></i>
+    Test Case Results
+  </h5>
+  
+  <div class="test-cases-grid">
+    {% for result in results %}
+      <div class="test-case-card {% if result.passed %}passed{% else %}failed{% endif %}">
+        <div class="test-case-header">
+          <h6 class="mb-0">Test Case {{ forloop.counter }}</h6>
+          <div class="test-case-status">
+            <div class="status-icon {% if result.passed %}status-passed{% else %}status-failed{% endif %}">
+              <i class="fas fa-{% if result.passed %}check{% else %}times{% endif %}"></i>
+            </div>
+            {% if result.passed %}Passed{% else %}Failed{% endif %}
+          </div>
+        </div>
+        
+        <div class="test-case-content">
+          <div class="io-grid">
+            <div class="io-section">
+              <div class="io-label">Input</div>
+              <div class="io-content">{{ result.input|default:"(empty)" }}</div>
+            </div>
+            
+            <div class="io-section">
+              <div class="io-label">Expected Output</div>
+              <div class="io-content">{{ result.expected|default:"(empty)" }}</div>
+            </div>
+            
+            <div class="io-section {% if not result.passed %}output-mismatch{% endif %}">
+              <div class="io-label">
+                Your Output
+                {% if not result.passed %}
+                  <i class="fas fa-exclamation-triangle text-warning ms-1" title="Output mismatch"></i>
+                {% endif %}
+              </div>
+              <div class="io-content">{{ result.actual|default:"(empty)" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if is_submission %}
+    <div class="verdict-section {% if all_passed %}verdict-accepted{% else %}verdict-wrong{% endif %}">
+      <h4 class="mb-2">
+        <i class="fas fa-{% if all_passed %}trophy{% else %}exclamation-triangle{% endif %} me-2"></i>
+        {% if all_passed %}
+          Congratulations! Solution Accepted
+        {% else %}
+          Solution Needs Improvement
+        {% endif %}
+      </h4>
+      <p class="mb-0">
+        {% if all_passed %}
+          Your solution passed all test cases successfully!
+        {% else %}
+          Some test cases failed. Review your logic and try again.
+        {% endif %}
+      </p>
+    </div>
+  {% endif %}
+</div>
