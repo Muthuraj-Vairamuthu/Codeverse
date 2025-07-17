@@ -11,13 +11,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-import os 
+import os
 from dotenv import load_dotenv
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+import os
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -25,16 +26,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-default-in-build-phase")
 
-
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ['*']
+# Detect if running on Render
+import sys
+ON_RENDER = 'RENDER' in os.environ
 
+ALLOWED_HOSTS = ['*'] if DEBUG else ['codeverse-op7z.onrender.com']
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -79,14 +80,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/db/db.sqlite3',  # Persistent path for Render/Docker
+        'NAME': '/tmp/db.sqlite3' if ON_RENDER else BASE_DIR / 'db.sqlite3',
         'OPTIONS': {
             'transaction_mode': 'IMMEDIATE',
             'timeout': 20,
@@ -95,10 +94,8 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -114,32 +111,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') if not ON_RENDER else '/app/staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
 
 # Authentication settings
 AUTHENTICATION_BACKENDS = (
@@ -158,11 +145,8 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SEC
 # Social auth settings
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/problems/'
 SOCIAL_AUTH_LOGOUT_REDIRECT_URL = '/'
-# Where collectstatic will gather files for production
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # CSRF trusted origins for deployment
 CSRF_TRUSTED_ORIGINS = [
-    'https://codeverse-op7z.onrender.com',  # Replace with your actual Render domain
+    'https://codeverse-op7z.onrender.com',
 ]
-
