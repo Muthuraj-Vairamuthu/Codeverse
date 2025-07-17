@@ -4,3 +4,4 @@ docker
 requests
 psutil
 python-dotenv
+gunicorn
