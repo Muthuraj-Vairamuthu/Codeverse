@@ -86,7 +86,12 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': '/db/db.sqlite3',  # Persistent path for Render/Docker
+        'OPTIONS': {
+            'transaction_mode': 'IMMEDIATE',
+            'timeout': 20,
+            'init_command': 'PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL;'
+        }
     }
 }
 

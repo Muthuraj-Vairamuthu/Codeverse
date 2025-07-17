@@ -1,0 +1,11 @@
+services:
+  web:
+    build: .
+    volumes:
+      - db_data:/db
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=${SOCIAL_AUTH_GOOGLE_OAUTH2_KEY}
+      - SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=${SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET}
+volumes:
+  db_data:
