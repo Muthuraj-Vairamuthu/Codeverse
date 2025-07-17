@@ -15,8 +15,11 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy project files
 COPY . /app/
 
+# Ensure /tmp is writable for SQLite database
+RUN mkdir -p /tmp && chmod 777 /tmp
+
 # Expose port
 EXPOSE 8000
 
-# CMD that runs only after environment variables (like SECRET_KEY) are available
-CMD ["sh", "-c", "python manage.py collectstatic --noinput && python manage.py migrate && gunicorn myproject.wsgi:application --bind 0.0.0.0:8000"]
+# CMD to start Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi:application"]
